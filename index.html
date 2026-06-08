@@ -4,809 +4,606 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>HouseMatch — find your match. own the whole home.</title>
+<meta name="description" content="The funnest way to find a home — swipe to match, run the numbers, book a tour. Plus a command center that fills your units and captures every lead." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;450;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;450;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#0b0d0c;
-  --bg-soft:#12150f;
-  --panel:#15181a;
-  --panel-2:#1b1f1f;
-  --line:rgba(255,255,255,.08);
-  --line-2:rgba(255,255,255,.14);
-  --ink:#f4f3ee;
-  --ink-soft:#b9bcb4;
-  --ink-mute:#7e837a;
-  --accent:#c9f257;          /* electric chartreuse */
-  --accent-deep:#a8d63a;
-  --gold:#e8c98a;
-  --blue:#7db8ff;
-  --rose:#ff9b8a;
-  --radius:18px;
-  --radius-sm:12px;
-  --shadow:0 30px 80px -30px rgba(0,0,0,.7);
-  --maxw:1240px;
-  font-synthesis:none;
+  --bg:#0a0c0b; --bg2:#0e110f; --panel:#14181a; --panel2:#1a1f1f;
+  --line:rgba(255,255,255,.08); --line2:rgba(255,255,255,.15);
+  --ink:#f5f4ef; --soft:#bcc0b8; --mute:#7f857b;
+  --accent:#c9f257; --accent2:#a8d63a; --gold:#e8c98a; --blue:#7db8ff; --rose:#ff9b8a; --teal:#6fe0c5;
+  --r:18px; --rs:12px; --shadow:0 30px 80px -30px rgba(0,0,0,.75);
+  --maxw:1280px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{
-  background:var(--bg);
-  color:var(--ink);
-  font-family:'Inter',system-ui,sans-serif;
-  -webkit-font-smoothing:antialiased;
-  line-height:1.5;
-  overflow-x:hidden;
-}
-.serif{font-family:'Fraunces',Georgia,serif;font-weight:500;letter-spacing:-.01em;}
+body{background:var(--bg);color:var(--ink);font-family:'Inter',system-ui,sans-serif;-webkit-font-smoothing:antialiased;line-height:1.5;overflow-x:hidden}
+.serif{font-family:'Fraunces',Georgia,serif;letter-spacing:-.01em}
 a{color:inherit;text-decoration:none}
 button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
 img{display:block;max-width:100%}
-.wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px}
+input,select,textarea{font-family:inherit}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 26px}
+::selection{background:var(--accent);color:#0a0c08}
+::-webkit-scrollbar{width:10px;height:10px}::-webkit-scrollbar-thumb{background:#272c28;border-radius:9px}
 
-/* ===== top nav ===== */
-.nav{
-  position:sticky;top:0;z-index:50;
-  backdrop-filter:saturate(150%) blur(18px);
-  background:rgba(11,13,12,.72);
-  border-bottom:1px solid var(--line);
-}
-.nav-inner{display:flex;align-items:center;gap:8px;height:68px}
-.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:19px;letter-spacing:-.02em;margin-right:18px}
-.brand .mark{width:26px;height:26px;border-radius:8px;background:
-  conic-gradient(from 210deg, var(--accent), #6fe0c5 40%, var(--blue) 70%, var(--accent));
-  box-shadow:0 0 0 1px rgba(255,255,255,.12), 0 6px 18px -6px var(--accent);}
-.navlinks{display:flex;gap:2px;flex:1}
-.navlink{
-  padding:9px 14px;border-radius:10px;color:var(--ink-soft);font-weight:500;font-size:14.5px;
-  transition:.18s;white-space:nowrap;
-}
-.navlink:hover{color:var(--ink);background:rgba(255,255,255,.04)}
-.navlink.active{color:var(--bg);background:var(--accent);font-weight:600}
+/* nav */
+.nav{position:sticky;top:0;z-index:60;backdrop-filter:saturate(160%) blur(18px);background:rgba(10,12,11,.72);border-bottom:1px solid var(--line)}
+.nav-in{display:flex;align-items:center;gap:6px;height:64px}
+.brand{display:flex;align-items:center;gap:9px;font-weight:700;font-size:18px;letter-spacing:-.02em;margin-right:14px;cursor:pointer}
+.mark{width:26px;height:26px;border-radius:8px;background:conic-gradient(from 210deg,var(--accent),var(--teal) 40%,var(--blue) 70%,var(--accent));box-shadow:0 0 0 1px rgba(255,255,255,.12),0 6px 18px -6px var(--accent)}
+.nlinks{display:flex;gap:2px;flex:1}
+.nlink{padding:8px 13px;border-radius:10px;color:var(--soft);font-weight:500;font-size:14px;transition:.16s;white-space:nowrap}
+.nlink:hover{color:var(--ink);background:rgba(255,255,255,.05)}
+.nlink.on{color:#0a0c08;background:var(--accent);font-weight:600}
 .nav-cta{display:flex;gap:8px;align-items:center}
-.btn{
-  display:inline-flex;align-items:center;gap:8px;justify-content:center;
-  padding:10px 16px;border-radius:11px;font-weight:600;font-size:14px;transition:.18s;
-  border:1px solid var(--line-2);color:var(--ink);background:rgba(255,255,255,.03);
-}
-.btn:hover{background:rgba(255,255,255,.08);transform:translateY(-1px)}
-.btn.primary{background:var(--accent);color:#0a0c08;border-color:transparent}
-.btn.primary:hover{background:#d6ff6e;box-shadow:0 10px 30px -10px var(--accent)}
-.btn.ghost{border-color:transparent;background:transparent;color:var(--ink-soft)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:10px 15px;border-radius:11px;font-weight:600;font-size:14px;transition:.16s;border:1px solid var(--line2);color:var(--ink);background:rgba(255,255,255,.03)}
+.btn:hover{background:rgba(255,255,255,.09);transform:translateY(-1px)}
+.btn.pri{background:var(--accent);color:#0a0c08;border-color:transparent}
+.btn.pri:hover{background:#d6ff6e;box-shadow:0 10px 30px -10px var(--accent)}
+.btn.gho{border-color:transparent;background:transparent;color:var(--soft)}
 .btn.sm{padding:7px 12px;font-size:13px;border-radius:9px}
-.pill{display:inline-flex;align-items:center;gap:7px;padding:6px 12px;border-radius:999px;font-size:12.5px;font-weight:600;
-  border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--ink-soft)}
+.btn.lg{padding:13px 22px;font-size:15px;border-radius:13px}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.pill{display:inline-flex;align-items:center;gap:7px;padding:6px 12px;border-radius:999px;font-size:12.5px;font-weight:600;border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--soft)}
 .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent)}
+.eyebrow{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent2);font-weight:600}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r)}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:22px}
+.muted{color:var(--mute)} .soft{color:var(--soft)}
 
-/* ===== generic ===== */
-.view{display:none;animation:fade .5s ease}
-.view.active{display:block}
-@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-.eyebrow{font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent-deep);font-weight:600}
-.section{padding:72px 0}
-.muted{color:var(--ink-mute)}
-.soft{color:var(--ink-soft)}
-.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius)}
+#view{min-height:60vh}
+.fade{animation:fade .45s ease}
+@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes pop{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:scale(1)}}
 
-/* ===== HERO / DISCOVER ===== */
-.hero{position:relative;padding:64px 0 30px;overflow:hidden}
-.hero-glow{position:absolute;inset:-30% -10% auto -10%;height:620px;z-index:0;
-  background:
-   radial-gradient(50% 60% at 22% 30%, rgba(201,242,87,.16), transparent 60%),
-   radial-gradient(45% 55% at 80% 20%, rgba(125,184,255,.14), transparent 60%);
-  filter:blur(8px);pointer-events:none}
-.hero-inner{position:relative;z-index:1}
-.h-title{font-size:clamp(40px,6.4vw,78px);line-height:.98;letter-spacing:-.03em;max-width:14ch}
-.h-title em{font-style:italic;color:var(--accent)}
-.h-sub{margin-top:22px;font-size:18.5px;color:var(--ink-soft);max-width:54ch}
-.search{
-  margin-top:34px;background:var(--panel-2);border:1px solid var(--line-2);border-radius:20px;
-  padding:14px;box-shadow:var(--shadow);max-width:880px;
-}
-.search-top{display:flex;gap:10px;align-items:center;background:#0d0f0d;border:1px solid var(--line);border-radius:14px;padding:6px 6px 6px 16px}
-.search-top svg{flex:0 0 auto}
-.search-top input{flex:1;background:none;border:none;color:var(--ink);font-size:16px;padding:14px 4px;outline:none}
-.search-top input::placeholder{color:var(--ink-mute)}
-.seg{display:flex;gap:4px;background:#0d0f0d;border:1px solid var(--line);border-radius:11px;padding:4px}
-.seg button{padding:8px 14px;border-radius:8px;font-size:13.5px;font-weight:600;color:var(--ink-soft)}
-.seg button.on{background:var(--accent);color:#0a0c08}
-.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-.chip{padding:7px 13px;border-radius:999px;font-size:13px;border:1px solid var(--line);color:var(--ink-soft);transition:.16s;background:rgba(255,255,255,.02)}
-.chip:hover{border-color:var(--accent);color:var(--ink)}
-.search-row{display:flex;gap:10px;margin-top:12px;align-items:center;flex-wrap:wrap}
-.stat-strip{display:flex;gap:30px;margin-top:34px;flex-wrap:wrap}
+/* hero */
+.hero{position:relative;padding:60px 0 26px;overflow:hidden}
+.glow{position:absolute;inset:-30% -10% auto -10%;height:600px;z-index:0;background:radial-gradient(50% 60% at 20% 30%,rgba(201,242,87,.16),transparent 60%),radial-gradient(45% 55% at 82% 18%,rgba(125,184,255,.15),transparent 60%);filter:blur(8px);pointer-events:none}
+.hero-in{position:relative;z-index:1}
+.htitle{font-size:clamp(40px,6.6vw,80px);line-height:.97;letter-spacing:-.03em;max-width:15ch;font-weight:500}
+.htitle em{font-style:italic;color:var(--accent)}
+.hsub{margin-top:20px;font-size:18px;color:var(--soft);max-width:56ch}
+.stats{display:flex;gap:30px;margin-top:32px;flex-wrap:wrap}
 .stat b{font-family:'Fraunces',serif;font-size:30px;display:block;line-height:1}
-.stat span{font-size:13px;color:var(--ink-mute)}
+.stat span{font-size:12.5px;color:var(--mute)}
 
-/* feature band */
-.lifecycle{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:18px}
-.life{padding:20px;border-radius:16px;border:1px solid var(--line);background:linear-gradient(180deg,var(--panel),#101312);position:relative;overflow:hidden;transition:.2s;cursor:pointer}
-.life:hover{transform:translateY(-3px);border-color:var(--line-2)}
-.life .ic{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;background:rgba(201,242,87,.12);color:var(--accent);margin-bottom:14px}
-.life h4{font-size:16px;margin-bottom:6px}
-.life p{font-size:13.5px;color:var(--ink-mute);line-height:1.45}
-.life .num{position:absolute;top:14px;right:16px;font-family:'Fraunces',serif;font-size:13px;color:var(--ink-mute)}
+/* search bar */
+.searchbox{margin-top:30px;background:var(--panel2);border:1px solid var(--line2);border-radius:20px;padding:14px;box-shadow:var(--shadow);max-width:920px}
+.seg{display:flex;gap:4px;background:#0c0e0c;border:1px solid var(--line);border-radius:11px;padding:4px;width:max-content}
+.seg button{padding:8px 15px;border-radius:8px;font-size:13.5px;font-weight:600;color:var(--soft);transition:.15s}
+.seg button.on{background:var(--accent);color:#0a0c08}
+.srow{display:flex;gap:10px;align-items:center;background:#0c0e0c;border:1px solid var(--line);border-radius:14px;padding:6px 6px 6px 15px;margin-top:12px}
+.srow input{flex:1;background:none;border:none;color:var(--ink);font-size:16px;padding:13px 4px;outline:none}
+.srow input::placeholder{color:var(--mute)}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.chip{padding:7px 13px;border-radius:999px;font-size:13px;border:1px solid var(--line);color:var(--soft);transition:.15s;background:rgba(255,255,255,.02)}
+.chip:hover{border-color:var(--accent);color:var(--ink)}
 
-/* results */
-.results-head{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;margin-bottom:18px}
-.layout{display:grid;grid-template-columns:1fr 420px;gap:22px;align-items:start}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-.prop{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--panel);transition:.22s;cursor:pointer}
-.prop:hover{transform:translateY(-4px);border-color:var(--line-2);box-shadow:var(--shadow)}
-.prop .ph{height:200px;position:relative;background:linear-gradient(135deg,#243024,#11201f)}
-.prop .ph img{width:100%;height:100%;object-fit:cover}
-.prop .tag{position:absolute;top:12px;left:12px;display:flex;gap:6px}
+/* section header */
+.sh{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;margin-bottom:22px}
+.sh h2{font-family:'Fraunces',serif;font-weight:500;font-size:32px;letter-spacing:-.02em;max-width:22ch;line-height:1.05}
+.section{padding:54px 0}
+
+/* lifecycle */
+.life-g{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.life{padding:20px;border-radius:16px;border:1px solid var(--line);background:linear-gradient(180deg,var(--panel),#0f1311);position:relative;transition:.2s;cursor:pointer;overflow:hidden}
+.life:hover{transform:translateY(-4px);border-color:var(--line2)}
+.life .ic{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;background:rgba(201,242,87,.12);color:var(--accent);margin-bottom:13px;font-size:18px}
+.life h4{font-size:16px;margin-bottom:6px} .life p{font-size:13.5px;color:var(--mute);line-height:1.45}
+.life .n{position:absolute;top:14px;right:16px;font-family:'Fraunces',serif;font-size:13px;color:var(--mute)}
+
+/* cards / grid */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px}
+.prop{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--panel);transition:.22s;cursor:pointer;animation:pop .4s ease}
+.prop:hover{transform:translateY(-5px);border-color:var(--line2);box-shadow:var(--shadow)}
+.prop .ph{height:196px;position:relative;background:linear-gradient(135deg,#243024,#11201f);overflow:hidden}
+.prop .ph img{width:100%;height:100%;object-fit:cover;transition:.4s}
+.prop:hover .ph img{transform:scale(1.06)}
+.tagrow{position:absolute;top:12px;left:12px;display:flex;gap:6px}
 .badge{padding:5px 10px;border-radius:8px;font-size:11.5px;font-weight:700;backdrop-filter:blur(6px);background:rgba(8,10,8,.6);border:1px solid rgba(255,255,255,.14)}
 .badge.match{background:var(--accent);color:#0a0c08;border-color:transparent}
-.save{position:absolute;top:12px;right:12px;width:34px;height:34px;border-radius:9px;display:grid;place-items:center;background:rgba(8,10,8,.55);border:1px solid rgba(255,255,255,.16);backdrop-filter:blur(6px)}
+.badge.hot{background:var(--rose);color:#1a0a08;border-color:transparent}
+.save{position:absolute;top:12px;right:12px;width:34px;height:34px;border-radius:9px;display:grid;place-items:center;background:rgba(8,10,8,.55);border:1px solid rgba(255,255,255,.16);backdrop-filter:blur(6px);font-size:15px;transition:.15s}
 .save:hover{background:var(--accent);color:#0a0c08}
-.prop .body{padding:16px}
-.price{font-family:'Fraunces',serif;font-size:23px}
-.price span{font-size:13px;color:var(--ink-mute);font-family:'Inter'}
-.addr{color:var(--ink-soft);font-size:14px;margin-top:3px}
-.facts{display:flex;gap:14px;margin-top:13px;padding-top:13px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-soft)}
-.facts b{color:var(--ink);font-weight:600}
-.ai-note{margin-top:12px;font-size:12.5px;color:var(--accent-deep);background:rgba(201,242,87,.07);border:1px solid rgba(201,242,87,.18);padding:9px 11px;border-radius:10px;display:flex;gap:8px}
+.save.on{background:var(--rose);color:#1a0a08;border-color:transparent}
+.prop .body{padding:15px}
+.price{font-family:'Fraunces',serif;font-size:22px}
+.price span{font-size:13px;color:var(--mute);font-family:'Inter'}
+.addr{color:var(--soft);font-size:13.5px;margin-top:3px}
+.facts{display:flex;gap:13px;margin-top:12px;padding-top:12px;border-top:1px solid var(--line);font-size:12.5px;color:var(--soft)}
+.facts b{color:var(--ink)}
+.ai-note{margin-top:11px;font-size:12px;color:var(--accent2);background:rgba(201,242,87,.07);border:1px solid rgba(201,242,87,.18);padding:8px 10px;border-radius:9px;display:flex;gap:7px}
 
-/* map rail */
-.maprail{position:sticky;top:88px}
-.map{height:540px;border-radius:16px;border:1px solid var(--line);position:relative;overflow:hidden;
-  background:
-    radial-gradient(120% 120% at 30% 20%, #1a2420, #0d100e 70%);}
-.map .grid-lines{position:absolute;inset:0;opacity:.5;
-  background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
-  background-size:46px 46px}
+/* filter bar */
+.filters{display:flex;gap:10px;flex-wrap:wrap;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px;margin-bottom:18px}
+.fctrl{display:flex;flex-direction:column;gap:4px}
+.fctrl label{font-size:10.5px;text-transform:uppercase;letter-spacing:.07em;color:var(--mute);font-weight:600}
+.fin{background:#0c0e0c;border:1px solid var(--line2);border-radius:9px;color:var(--ink);padding:8px 10px;font-size:13.5px;outline:none;transition:.15s}
+.fin:focus{border-color:var(--accent)}
+.layout{display:grid;grid-template-columns:1fr 380px;gap:20px;align-items:start}
+.maprail{position:sticky;top:80px}
+.map{height:520px;border-radius:16px;border:1px solid var(--line);position:relative;overflow:hidden;background:radial-gradient(120% 120% at 30% 20%,#1a2420,#0c0f0d 70%)}
+.map .gl{position:absolute;inset:0;opacity:.45;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:44px 44px}
 .map .road{position:absolute;background:rgba(255,255,255,.05);border-radius:20px}
-.pin{position:absolute;transform:translate(-50%,-50%);background:var(--panel-2);border:1px solid var(--line-2);
-  padding:6px 10px;border-radius:999px;font-size:12.5px;font-weight:700;cursor:pointer;transition:.16s;white-space:nowrap;box-shadow:0 6px 18px -8px #000}
-.pin:hover,.pin.on{background:var(--accent);color:#0a0c08;border-color:transparent;transform:translate(-50%,-50%) scale(1.08);z-index:3}
-.map-cap{position:absolute;left:14px;bottom:14px;right:14px;display:flex;justify-content:space-between;align-items:center;
-  background:rgba(8,10,8,.6);backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:12px;padding:10px 14px;font-size:12.5px;color:var(--ink-soft)}
+.pin{position:absolute;transform:translate(-50%,-50%);background:var(--panel2);border:1px solid var(--line2);padding:5px 10px;border-radius:999px;font-size:12px;font-weight:700;cursor:pointer;transition:.15s;white-space:nowrap;box-shadow:0 6px 18px -8px #000}
+.pin:hover,.pin.on{background:var(--accent);color:#0a0c08;border-color:transparent;transform:translate(-50%,-50%) scale(1.1);z-index:3}
 
-/* ===== PROPERTY DETAIL ===== */
-.pd-gallery{display:grid;grid-template-columns:2fr 1fr 1fr;grid-template-rows:1fr 1fr;gap:10px;height:440px;border-radius:18px;overflow:hidden}
-.pd-gallery>div{background:linear-gradient(135deg,#26312a,#11201f);position:relative;overflow:hidden}
-.pd-gallery>div:first-child{grid-row:1/3}
-.pd-gallery img{width:100%;height:100%;object-fit:cover}
-.pd-grid{display:grid;grid-template-columns:1fr 360px;gap:30px;margin-top:30px;align-items:start}
-.pd-h{font-family:'Fraunces',serif;font-size:34px;letter-spacing:-.02em}
-.kv{display:flex;gap:26px;margin:18px 0;flex-wrap:wrap}
-.kv div b{display:block;font-family:'Fraunces',serif;font-size:22px}
-.kv div span{font-size:12.5px;color:var(--ink-mute)}
-.score-ring{--p:92;width:78px;height:78px;border-radius:50%;display:grid;place-items:center;
-  background:conic-gradient(var(--accent) calc(var(--p)*1%), rgba(255,255,255,.08) 0);position:relative}
-.score-ring::before{content:"";position:absolute;inset:7px;border-radius:50%;background:var(--panel)}
-.score-ring b{position:relative;font-family:'Fraunces',serif;font-size:22px}
-.feat{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
-.feat div{padding:11px 13px;border:1px solid var(--line);border-radius:11px;font-size:13.5px;color:var(--ink-soft);display:flex;gap:9px;align-items:center}
-.book{position:sticky;top:88px}
-.book .row{display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--line);font-size:14px}
-.book .row.total{border:none;font-weight:700;font-size:16px;padding-top:14px}
-.afford{margin-top:14px;background:rgba(125,184,255,.06);border:1px solid rgba(125,184,255,.2);border-radius:12px;padding:14px}
-.afford .bar{height:8px;border-radius:99px;background:rgba(255,255,255,.08);overflow:hidden;margin-top:9px}
-.afford .bar i{display:block;height:100%;width:38%;background:linear-gradient(90deg,var(--blue),#a9d2ff);border-radius:99px}
+/* match / swipe */
+.swipe-wrap{max-width:460px;margin:0 auto;position:relative;height:560px}
+.swipe-card{position:absolute;inset:0;border-radius:22px;overflow:hidden;border:1px solid var(--line2);background:var(--panel);box-shadow:var(--shadow);will-change:transform;transition:transform .35s cubic-bezier(.2,.8,.3,1),opacity .35s}
+.swipe-card .img{height:62%;position:relative;background:#1a2420}
+.swipe-card .img img{width:100%;height:100%;object-fit:cover}
+.swipe-card .grad{position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(8,10,8,.85))}
+.swipe-card .info{position:absolute;left:0;right:0;bottom:0;padding:18px}
+.swipe-card .body{padding:18px}
+.stamp{position:absolute;top:24px;padding:8px 16px;border-radius:12px;font-weight:800;font-size:24px;border:3px solid;opacity:0;transition:.1s;transform:rotate(-12deg)}
+.stamp.like{left:20px;color:var(--accent);border-color:var(--accent)}
+.stamp.nope{right:20px;color:var(--rose);border-color:var(--rose);transform:rotate(12deg)}
+.swipe-ctrls{display:flex;justify-content:center;gap:18px;margin-top:24px}
+.scbtn{width:62px;height:62px;border-radius:50%;display:grid;place-items:center;font-size:24px;border:1px solid var(--line2);background:var(--panel);transition:.15s}
+.scbtn:hover{transform:scale(1.08)}
+.scbtn.no:hover{border-color:var(--rose);color:var(--rose)}
+.scbtn.yes:hover{border-color:var(--accent);color:var(--accent)}
+.scbtn.info2:hover{border-color:var(--blue);color:var(--blue)}
 
-/* ===== DASHBOARD (command center) ===== */
-.dash{display:grid;grid-template-columns:230px 1fr;gap:26px;align-items:start}
-.side{position:sticky;top:88px;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px}
-.side a{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:10px;font-size:14px;color:var(--ink-soft);font-weight:500;transition:.15s}
+/* property detail */
+.pd-g{display:grid;grid-template-columns:2fr 1fr 1fr;grid-template-rows:1fr 1fr;gap:10px;height:440px;border-radius:18px;overflow:hidden}
+.pd-g>div{background:#1a2420;position:relative;overflow:hidden}
+.pd-g>div:first-child{grid-row:1/3}
+.pd-g img{width:100%;height:100%;object-fit:cover}
+.pd-grid{display:grid;grid-template-columns:1fr 360px;gap:30px;margin-top:28px;align-items:start}
+.kv{display:flex;gap:24px;margin:16px 0;flex-wrap:wrap}
+.kv div b{display:block;font-family:'Fraunces',serif;font-size:21px} .kv div span{font-size:12px;color:var(--mute)}
+.ring{width:78px;height:78px;border-radius:50%;display:grid;place-items:center;position:relative;flex:0 0 auto}
+.ring::before{content:"";position:absolute;inset:7px;border-radius:50%;background:var(--panel)}
+.ring b{position:relative;font-family:'Fraunces',serif;font-size:21px}
+.feat{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px}
+.feat div{padding:10px 12px;border:1px solid var(--line);border-radius:10px;font-size:13px;color:var(--soft)}
+.book{position:sticky;top:80px}
+.row{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--line);font-size:14px}
+.row.tot{border:none;font-weight:700;font-size:16px;padding-top:12px}
+.range{width:100%;accent-color:var(--accent);margin-top:6px}
+
+/* KPI / dash */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.kpi{padding:18px;border-radius:15px;border:1px solid var(--line);background:linear-gradient(180deg,var(--panel),#0f1311)}
+.kpi .l{font-size:12px;color:var(--mute)}
+.kpi b{font-family:'Fraunces',serif;font-size:30px;display:block;margin-top:7px;line-height:1}
+.kpi .d{font-size:12px;font-weight:600;margin-top:7px}
+.up{color:var(--accent2)} .down{color:var(--rose)}
+.bars{display:flex;align-items:flex-end;gap:9px;height:150px;margin-top:6px}
+.bars .b{flex:1;border-radius:7px 7px 3px 3px;background:linear-gradient(180deg,var(--accent),rgba(201,242,87,.25));transition:.3s}
+.bars .b.alt{background:linear-gradient(180deg,rgba(125,184,255,.9),rgba(125,184,255,.2))}
+.donut{width:140px;height:140px;border-radius:50%;position:relative}
+.donut::before{content:"";position:absolute;inset:22px;border-radius:50%;background:var(--panel)}
+.donut .c{position:absolute;inset:0;display:grid;place-items:center;text-align:center}
+.lg-i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:7px}
+
+/* pipeline */
+.pipe{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.col{background:#0d100e;border:1px solid var(--line);border-radius:13px;padding:12px;min-height:120px}
+.col h5{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--mute);margin-bottom:10px;display:flex;justify-content:space-between}
+.appcard{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:12px;margin-bottom:9px;cursor:grab;transition:.15s;animation:pop .3s}
+.appcard:hover{border-color:var(--line2);transform:translateY(-2px)}
+.appcard .nm{font-weight:600;font-size:13.5px}
+.appcard .meta{font-size:11.5px;color:var(--mute);margin-top:3px}
+.appcard .sco{display:inline-block;margin-top:8px;font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;background:rgba(201,242,87,.13);color:var(--accent2)}
+.appcard .adv{margin-top:9px;width:100%;font-size:12px;padding:6px;border-radius:8px;background:rgba(255,255,255,.05);border:1px solid var(--line);transition:.15s}
+.appcard .adv:hover{background:var(--accent);color:#0a0c08}
+
+/* table */
+table{width:100%;border-collapse:collapse}
+th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--mute);font-weight:600;padding:0 10px 11px}
+td{padding:12px 10px;border-top:1px solid var(--line);font-size:13.5px;color:var(--soft)}
+td b{color:var(--ink)}
+.statp{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:7px;font-size:11.5px;font-weight:600}
+.s-ok{background:rgba(201,242,87,.13);color:var(--accent2)} .s-late{background:rgba(255,155,138,.13);color:var(--rose)}
+.s-soon{background:rgba(232,201,138,.14);color:var(--gold)} .s-new{background:rgba(125,184,255,.13);color:var(--blue)}
+
+/* forms */
+.field{margin-bottom:14px}
+.field label{display:block;font-size:13px;color:var(--soft);margin-bottom:6px;font-weight:500}
+.input,textarea,select.input{width:100%;background:#0c0e0c;border:1px solid var(--line2);border-radius:11px;color:var(--ink);padding:12px 13px;font-size:14.5px;outline:none;transition:.15s}
+.input:focus,textarea:focus{border-color:var(--accent)}
+textarea{resize:vertical;min-height:90px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.steps{display:flex;gap:8px;margin-bottom:22px;flex-wrap:wrap}
+.step{display:flex;align-items:center;gap:9px;padding:10px 15px;border-radius:12px;border:1px solid var(--line);font-size:13.5px;color:var(--soft)}
+.step.on{border-color:var(--accent);color:var(--ink);background:rgba(201,242,87,.06)}
+.step .sn{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:700;background:rgba(255,255,255,.06)}
+.step.on .sn{background:var(--accent);color:#0a0c08}
+.ai-write{display:flex;gap:9px;align-items:center;background:rgba(201,242,87,.07);border:1px dashed rgba(201,242,87,.35);border-radius:11px;padding:11px 13px;font-size:13px;color:var(--accent2);margin-top:8px;cursor:pointer;transition:.15s}
+.ai-write:hover{background:rgba(201,242,87,.12)}
+
+/* sidebar dash */
+.dash{display:grid;grid-template-columns:210px 1fr;gap:24px;align-items:start}
+.side{position:sticky;top:80px;background:var(--panel);border:1px solid var(--line);border-radius:15px;padding:12px}
+.side a{display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:9px;font-size:13.5px;color:var(--soft);font-weight:500;transition:.14s;cursor:pointer}
 .side a:hover{background:rgba(255,255,255,.04);color:var(--ink)}
 .side a.on{background:rgba(201,242,87,.12);color:var(--accent)}
-.side .sep{height:1px;background:var(--line);margin:10px 6px}
-.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
-.kpi{padding:20px;border-radius:16px;border:1px solid var(--line);background:linear-gradient(180deg,var(--panel),#101312)}
-.kpi .lab{font-size:12.5px;color:var(--ink-mute);display:flex;align-items:center;gap:6px}
-.kpi b{font-family:'Fraunces',serif;font-size:32px;display:block;margin-top:8px;line-height:1}
-.kpi .delta{font-size:12.5px;font-weight:600;margin-top:8px}
-.up{color:var(--accent-deep)}.down{color:var(--rose)}
-.panel{border:1px solid var(--line);border-radius:16px;background:var(--panel);padding:22px}
-.panel h3{font-size:16px;margin-bottom:4px}
-.panel .sub{font-size:13px;color:var(--ink-mute);margin-bottom:16px}
-table{width:100%;border-collapse:collapse}
-th{text-align:left;font-size:11.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-mute);font-weight:600;padding:0 10px 12px}
-td{padding:13px 10px;border-top:1px solid var(--line);font-size:14px;color:var(--ink-soft)}
-td b{color:var(--ink);font-weight:600}
-.statp{display:inline-flex;align-items:center;gap:6px;padding:4px 9px;border-radius:7px;font-size:12px;font-weight:600}
-.s-ok{background:rgba(201,242,87,.13);color:var(--accent-deep)}
-.s-late{background:rgba(255,155,138,.13);color:var(--rose)}
-.s-soon{background:rgba(232,201,138,.14);color:var(--gold)}
-.s-vac{background:rgba(125,184,255,.13);color:var(--blue)}
-.bars{display:flex;align-items:flex-end;gap:10px;height:160px;margin-top:8px}
-.bars .b{flex:1;border-radius:8px 8px 4px 4px;background:linear-gradient(180deg,var(--accent),rgba(201,242,87,.25));position:relative;transition:.3s}
-.bars .b.alt{background:linear-gradient(180deg,rgba(125,184,255,.9),rgba(125,184,255,.2))}
-.bars .b span{position:absolute;bottom:-22px;left:0;right:0;text-align:center;font-size:11px;color:var(--ink-mute)}
-.maint{display:flex;gap:13px;padding:14px;border:1px solid var(--line);border-radius:12px;align-items:flex-start;margin-bottom:11px}
-.maint .pri{width:9px;height:9px;border-radius:50%;margin-top:6px;flex:0 0 auto}
-.donut{width:150px;height:150px;border-radius:50%;
-  background:conic-gradient(var(--accent) 0 72%, var(--blue) 72% 89%, var(--rose) 89% 100%);position:relative}
-.donut::before{content:"";position:absolute;inset:24px;border-radius:50%;background:var(--panel)}
-.donut .c{position:absolute;inset:0;display:grid;place-items:center;text-align:center}
-.legend{display:flex;flex-direction:column;gap:10px;font-size:13px;color:var(--ink-soft)}
-.legend i{width:10px;height:10px;border-radius:3px;display:inline-block;margin-right:8px}
+.side .sep{height:1px;background:var(--line);margin:9px 6px}
 
-/* tenant portal */
-.tp-hero{border-radius:18px;padding:30px;border:1px solid var(--line);
-  background:radial-gradient(120% 140% at 100% 0,rgba(201,242,87,.12),transparent 55%),var(--panel)}
-.pay{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-top:18px;
-  background:#0d100e;border:1px solid var(--line-2);border-radius:14px;padding:20px}
+/* modal */
+.modal-bg{position:fixed;inset:0;background:rgba(5,7,6,.7);backdrop-filter:blur(6px);z-index:100;display:none;align-items:center;justify-content:center;padding:20px;animation:fade .25s}
+.modal-bg.show{display:flex}
+.modal{background:var(--panel);border:1px solid var(--line2);border-radius:18px;padding:26px;max-width:440px;width:100%;box-shadow:var(--shadow);animation:pop .3s}
+.modal h3{font-family:'Fraunces',serif;font-size:24px;margin-bottom:4px}
+.x{position:absolute;top:16px;right:18px;font-size:20px;color:var(--mute)}
 
-/* list flow */
-.steps{display:flex;gap:10px;margin-bottom:26px;flex-wrap:wrap}
-.step{display:flex;align-items:center;gap:10px;padding:11px 16px;border-radius:12px;border:1px solid var(--line);font-size:14px;color:var(--ink-soft)}
-.step.on{border-color:var(--accent);color:var(--ink);background:rgba(201,242,87,.06)}
-.step .n{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-size:12.5px;font-weight:700;background:rgba(255,255,255,.06)}
-.step.on .n{background:var(--accent);color:#0a0c08}
-.field{margin-bottom:16px}
-.field label{display:block;font-size:13px;color:var(--ink-soft);margin-bottom:7px;font-weight:500}
-.input,textarea,select{width:100%;background:#0d100e;border:1px solid var(--line-2);border-radius:11px;color:var(--ink);
-  padding:13px 14px;font-size:14.5px;font-family:inherit;outline:none;transition:.15s}
-.input:focus,textarea:focus,select:focus{border-color:var(--accent)}
-textarea{resize:vertical;min-height:110px}
-.ai-write{display:flex;gap:10px;align-items:center;background:rgba(201,242,87,.07);border:1px dashed rgba(201,242,87,.35);
-  border-radius:12px;padding:12px 14px;font-size:13.5px;color:var(--accent-deep);margin-top:8px;cursor:pointer;transition:.16s}
-.ai-write:hover{background:rgba(201,242,87,.12)}
-.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-
-/* footer */
-.foot{border-top:1px solid var(--line);margin-top:40px;padding:46px 0 60px;color:var(--ink-mute);font-size:13.5px}
-.foot-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:30px}
-.foot h5{color:var(--ink);font-size:13px;margin-bottom:14px;letter-spacing:.04em}
-.foot a{display:block;color:var(--ink-mute);padding:5px 0;transition:.15s}
-.foot a:hover{color:var(--ink)}
-
-.section-h{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:26px;gap:20px;flex-wrap:wrap}
-.section-h h2{font-family:'Fraunces',serif;font-size:34px;letter-spacing:-.02em;max-width:20ch;line-height:1.05}
-
-/* toast */
-.toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(120px);z-index:200;
-  background:var(--panel-2);border:1px solid var(--line-2);border-radius:13px;padding:13px 18px;font-size:14px;
-  box-shadow:var(--shadow);display:flex;gap:10px;align-items:center;transition:.35s cubic-bezier(.2,.9,.3,1)}
+/* toast + confetti */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(140px);z-index:200;background:var(--panel2);border:1px solid var(--line2);border-radius:13px;padding:13px 18px;font-size:14px;box-shadow:var(--shadow);display:flex;gap:10px;align-items:center;transition:.4s cubic-bezier(.2,.9,.3,1);max-width:90vw}
 .toast.show{transform:translateX(-50%) translateY(0)}
-.toast .dot{background:var(--accent)}
+.cf{position:fixed;width:10px;height:14px;z-index:300;pointer-events:none;top:-20px}
 
-@media(max-width:1000px){
-  .layout{grid-template-columns:1fr}.maprail{display:none}
-  .pd-grid{grid-template-columns:1fr}.dash{grid-template-columns:1fr}.side{position:static;display:flex;gap:6px;overflow:auto}
-  .side .sep{display:none}.lifecycle{grid-template-columns:1fr 1fr}.kpis{grid-template-columns:1fr 1fr}
-  .pd-gallery{grid-template-columns:1fr 1fr;height:auto;grid-auto-rows:160px}.pd-gallery>div:first-child{grid-row:auto;grid-column:1/3;height:240px}
-  .foot-grid{grid-template-columns:1fr 1fr}
-}
-@media(max-width:640px){.grid{grid-template-columns:1fr}.two{grid-template-columns:1fr}.navlinks{display:none}.kpis{grid-template-columns:1fr 1fr}}
+.foot{border-top:1px solid var(--line);margin-top:40px;padding:44px 0 56px;color:var(--mute);font-size:13px}
+.foot-g{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:30px}
+.foot h5{color:var(--ink);font-size:12.5px;margin-bottom:13px}
+.foot a{display:block;padding:4px 0;transition:.15s}.foot a:hover{color:var(--ink)}
+
+@media(max-width:980px){.layout{grid-template-columns:1fr}.maprail{display:none}.pd-grid{grid-template-columns:1fr}.dash{grid-template-columns:1fr}.side{position:static;display:flex;gap:6px;overflow:auto}.side .sep{display:none}.life-g,.kpis,.pipe{grid-template-columns:1fr 1fr}.pd-g{grid-template-columns:1fr 1fr;height:auto;grid-auto-rows:150px}.pd-g>div:first-child{grid-row:auto;grid-column:1/3;height:230px}.foot-g{grid-template-columns:1fr 1fr}.nlinks{display:none}}
+@media(max-width:560px){.life-g,.kpis,.pipe,.two{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-
-<!-- ===================== NAV ===================== -->
-<nav class="nav">
-  <div class="wrap nav-inner">
-    <div class="brand" onclick="go('discover')" style="cursor:pointer">
-      <span class="mark"></span> HouseMatch
-    </div>
-    <div class="navlinks">
-      <button class="navlink active" data-nav="discover" onclick="go('discover')">Discover</button>
-      <button class="navlink" data-nav="results" onclick="go('results')">Search</button>
-      <button class="navlink" data-nav="command" onclick="go('command')">Command Center</button>
-      <button class="navlink" data-nav="tenant" onclick="go('tenant')">Tenant Portal</button>
-      <button class="navlink" data-nav="list" onclick="go('list')">List a Property</button>
-    </div>
-    <div class="nav-cta">
-      <button class="btn ghost sm" onclick="toast('Sign in is wired to your auth provider in the full build')">Sign in</button>
-      <button class="btn primary sm" onclick="go('list')">Get started</button>
-    </div>
+<nav class="nav"><div class="wrap nav-in">
+  <div class="brand" onclick="go('discover')"><span class="mark"></span> HouseMatch<span style="color:var(--accent);font-weight:600">.ai</span></div>
+  <div class="nlinks" id="nlinks"></div>
+  <div class="nav-cta">
+    <button class="btn gho sm" onclick="openLeads()">♥ <span id="savedCount">0</span></button>
+    <button class="btn pri sm" onclick="go('list')">List a property</button>
   </div>
-</nav>
+</div></nav>
 
-<!-- ===================== DISCOVER ===================== -->
-<section id="discover" class="view active">
-  <div class="hero">
-    <div class="hero-glow"></div>
-    <div class="wrap hero-inner">
-      <span class="pill"><span class="dot"></span> One home. One platform. Its entire life.</span>
-      <h1 class="serif h-title" style="margin-top:18px">Find it, finance it, <em>live in it</em>, manage it.</h1>
-      <p class="h-sub">HouseMatch is the operating system for where you live — search to buy or rent in plain English, run your whole portfolio, and let tenants pay rent and report issues in one place. Not another listings site. The layer underneath all of them.</p>
+<div id="view"></div>
 
-      <!-- AI search -->
-      <div class="search">
-        <div class="seg" style="margin-bottom:12px;width:max-content">
-          <button class="on" data-mode="rent" onclick="setMode(this,'rent')">Rent</button>
-          <button data-mode="buy" onclick="setMode(this,'buy')">Buy</button>
-          <button data-mode="sell" onclick="setMode(this,'sell')">Sell</button>
-          <button data-mode="invest" onclick="setMode(this,'invest')">Invest</button>
-        </div>
-        <div class="search-top">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3-3"/></svg>
-          <input id="q" placeholder="“2-bed with a yard, under $2,800, pet-friendly, near good schools and a 20-min commute”" />
-          <button class="btn primary" onclick="runSearch()">Search<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
-        </div>
-        <div class="chips">
-          <button class="chip" onclick="quick('Walkable neighborhood, natural light, in-unit laundry')">✦ Walkable + bright</button>
-          <button class="chip" onclick="quick('Best value 2BR for a first-time buyer under $480k')">✦ First-time buyer</button>
-          <button class="chip" onclick="quick('Cash-flow positive duplex, sub-8% cap rate ok')">✦ Income property</button>
-          <button class="chip" onclick="quick('Quiet, work-from-home, fiber internet, dedicated office')">✦ WFH ready</button>
-        </div>
-      </div>
+<footer class="foot"><div class="wrap"><div class="foot-g">
+  <div><div class="brand" style="font-size:17px"><span class="mark"></span> HouseMatch.ai</div>
+    <p style="margin-top:13px;max-width:34ch">The funnest way to find a home — and the smartest way to fill one. Discover, match, tour, finance, manage.</p>
+    <div style="margin-top:14px"><span class="pill"><span class="dot"></span> Live build</span></div></div>
+  <div><h5>Discover</h5><a onclick="go('match')">Swipe & match</a><a onclick="go('search')">Search</a><a onclick="go('search')">Map</a></div>
+  <div><h5>Operate</h5><a onclick="go('owner')">Command center</a><a onclick="go('owner')">Occupancy</a><a onclick="go('tenant')">Tenant portal</a></div>
+  <div><h5>Company</h5><a onclick="toast('About HouseMatch')">About</a><a onclick="toast('Pricing')">Pricing</a><a onclick="toast('Careers')">Careers</a></div>
+</div></div></footer>
 
-      <div class="stat-strip">
-        <div class="stat"><b>1.4M</b><span>active homes & rentals</span></div>
-        <div class="stat"><b>92%</b><span>avg. AI match accuracy</span></div>
-        <div class="stat"><b>$0</b><span>to list & manage your first unit</span></div>
-        <div class="stat"><b>11 min</b><span>median time to publish a listing</span></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- lifecycle -->
-  <div class="wrap section" style="padding-top:30px">
-    <div class="section-h">
-      <div>
-        <span class="eyebrow">The whole lifecycle</span>
-        <h2 class="serif" style="margin-top:10px">Most apps own one moment. HouseMatch owns the entire arc of a home.</h2>
-      </div>
-      <button class="btn" onclick="go('command')">See the command center →</button>
-    </div>
-    <div class="lifecycle">
-      <div class="life" onclick="runSearch()">
-        <span class="num">01</span>
-        <div class="ic">⌖</div><h4>Discover</h4>
-        <p>Natural-language search, AI match scoring, and a map that learns what you actually mean.</p>
-      </div>
-      <div class="life" onclick="go('detail')">
-        <span class="num">02</span>
-        <div class="ic">◫</div><h4>Decide & finance</h4>
-        <p>Live affordability, mortgage pre-qual, neighborhood intel, and 3D tours before you ever drive over.</p>
-      </div>
-      <div class="life" onclick="go('command')">
-        <span class="num">03</span>
-        <div class="ic">▦</div><h4>Manage</h4>
-        <p>Rent roll, occupancy, maintenance, and financials for every door — one command center.</p>
-      </div>
-      <div class="life" onclick="go('tenant')">
-        <span class="num">04</span>
-        <div class="ic">✶</div><h4>Live</h4>
-        <p>Tenants pay rent, report issues, and renew in a portal that feels like a great consumer app.</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- featured -->
-  <div class="wrap section" style="padding-top:10px">
-    <div class="section-h">
-      <div><span class="eyebrow">Curated for you</span>
-      <h2 class="serif" style="margin-top:10px">Homes your AGENT model thinks you'll love</h2></div>
-      <button class="btn" onclick="go('results')">Browse all →</button>
-    </div>
-    <div class="grid" id="featuredGrid"></div>
-  </div>
-
-  <div class="wrap" style="padding-bottom:30px">
-    <div class="card" style="padding:34px;display:grid;grid-template-columns:1.3fr 1fr;gap:34px;align-items:center;background:radial-gradient(120% 140% at 0 0,rgba(125,184,255,.1),transparent 55%),var(--panel)">
-      <div>
-        <span class="eyebrow">For owners & managers</span>
-        <h2 class="serif" style="font-size:32px;margin:12px 0">Run 1 door or 1,000 like a fund — without a fund's overhead.</h2>
-        <p class="soft" style="max-width:48ch">List once and syndicate everywhere, screen tenants in minutes, collect rent automatically, and watch a real P&L update in real time. The management layer that pays for the search.</p>
-        <div style="display:flex;gap:10px;margin-top:20px">
-          <button class="btn primary" onclick="go('command')">Open command center</button>
-          <button class="btn" onclick="go('list')">List a property</button>
-        </div>
-      </div>
-      <div class="kpis" style="grid-template-columns:1fr 1fr">
-        <div class="kpi"><span class="lab">Occupancy</span><b>96.4%</b><span class="delta up">▲ 2.1% MoM</span></div>
-        <div class="kpi"><span class="lab">Collected</span><b>99.1%</b><span class="delta up">▲ on time</span></div>
-        <div class="kpi"><span class="lab">NOI / mo</span><b>$48.2k</b><span class="delta up">▲ 6.3%</span></div>
-        <div class="kpi"><span class="lab">Open tickets</span><b>3</b><span class="delta">avg 1.2d</span></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ===================== RESULTS ===================== -->
-<section id="results" class="view">
-  <div class="wrap section">
-    <div class="results-head">
-      <div>
-        <span class="eyebrow">Search results</span>
-        <h2 class="serif" id="resultTitle" style="font-size:30px;margin-top:8px">Homes near you</h2>
-        <p class="muted" id="resultSummary" style="margin-top:6px;font-size:14px">AI parsed your request into filters · 248 matches</p>
-      </div>
-      <div class="seg">
-        <button class="on">Best match</button><button>Newest</button><button>Price</button>
-      </div>
-    </div>
-    <div class="layout">
-      <div class="grid" id="resultsGrid"></div>
-      <div class="maprail">
-        <div class="map" id="map">
-          <div class="grid-lines"></div>
-          <div class="road" style="left:0;right:0;top:46%;height:10px"></div>
-          <div class="road" style="top:0;bottom:0;left:38%;width:10px"></div>
-          <div class="road" style="left:10%;right:30%;top:74%;height:7px"></div>
-          <div class="map-cap"><span>● 248 homes in view</span><span class="soft">Drawn to scale · drag to explore</span></div>
-        </div>
-        <div class="card" style="padding:16px;margin-top:14px">
-          <div style="display:flex;gap:9px;align-items:center;font-size:13.5px"><span class="dot"></span><b>Commute lens</b></div>
-          <p class="muted" style="font-size:13px;margin-top:8px">Pins shaded by drive time to <b style="color:var(--ink)">your work address</b>. Greener = closer. Edit anytime.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ===================== PROPERTY DETAIL ===================== -->
-<section id="detail" class="view">
-  <div class="wrap section">
-    <button class="btn ghost sm" onclick="go('results')" style="margin-bottom:16px">← Back to results</button>
-    <div class="pd-gallery" id="pdGallery"></div>
-
-    <div class="pd-grid">
-      <div>
-        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:20px">
-          <div>
-            <span class="badge match" style="position:static">★ 94 HouseMatch Match</span>
-            <h1 class="pd-h" style="margin-top:12px">The Maple Row Residence</h1>
-            <p class="soft" style="font-size:15px;margin-top:4px">214 Maple Row · Riverside, Austin TX 78704</p>
-          </div>
-          <div class="score-ring" style="--p:94"><b>94</b></div>
-        </div>
-
-        <div class="kv">
-          <div><b>$2,750</b><span>per month</span></div>
-          <div><b>3</b><span>bedrooms</span></div>
-          <div><b>2</b><span>bathrooms</span></div>
-          <div><b>1,640</b><span>sq ft</span></div>
-          <div><b>2019</b><span>built</span></div>
-        </div>
-
-        <div class="ai-note" style="margin:0 0 20px">
-          <span>✦</span><span><b>Why it matches you:</b> hits your budget with room to spare, has the fenced yard and in-unit laundry you asked for, sits in a top-rated school zone, and your modeled commute is 18 minutes — 2 under your cap.</span>
-        </div>
-
-        <p class="soft" style="font-size:15px;line-height:1.6">A light-filled three-bedroom on a quiet tree-lined street, walking distance to the river trail. Floor-to-ceiling windows, white-oak floors, and a chef's kitchen with a gas range. The fenced backyard is move-in ready for pets, and the converted garage makes an ideal work-from-home studio.</p>
-
-        <h3 class="serif" style="font-size:20px;margin:26px 0 4px">Features</h3>
-        <div class="feat">
-          <div>✓ In-unit washer & dryer</div><div>✓ Fenced backyard</div>
-          <div>✓ Gas range + island</div><div>✓ EV charger ready</div>
-          <div>✓ Central AC + smart thermostat</div><div>✓ Fiber internet wired</div>
-          <div>✓ Pet friendly (2 max)</div><div>✓ Dedicated office</div>
-        </div>
-
-        <h3 class="serif" style="font-size:20px;margin:28px 0 12px">Neighborhood intelligence</h3>
-        <div class="kpis" style="grid-template-columns:repeat(4,1fr)">
-          <div class="kpi"><span class="lab">Walk score</span><b>88</b><span class="delta">Very walkable</span></div>
-          <div class="kpi"><span class="lab">Schools</span><b>9/10</b><span class="delta up">Top zone</span></div>
-          <div class="kpi"><span class="lab">Commute</span><b>18m</b><span class="delta up">to your work</span></div>
-          <div class="kpi"><span class="lab">Noise</span><b>Low</b><span class="delta">quiet street</span></div>
-        </div>
-      </div>
-
-      <!-- booking card -->
-      <div class="book">
-        <div class="panel">
-          <div style="display:flex;justify-content:space-between;align-items:baseline">
-            <div class="price">$2,750<span> /mo</span></div>
-            <span class="statp s-ok">Available now</span>
-          </div>
-          <div style="margin-top:14px">
-            <div class="row"><span>First month</span><b>$2,750</b></div>
-            <div class="row"><span>Security deposit</span><b>$2,750</b></div>
-            <div class="row"><span>HouseMatch screening</span><b>$39</b></div>
-            <div class="row total"><span>Due to move in</span><b>$5,539</b></div>
-          </div>
-          <button class="btn primary" style="width:100%;margin-top:16px" onclick="toast('Tour request sent — owner notified instantly')">Book a tour</button>
-          <button class="btn" style="width:100%;margin-top:9px" onclick="toast('Application started — your HouseMatch profile auto-fills it')">Apply in 1 tap</button>
-
-          <div class="afford">
-            <div style="display:flex;justify-content:space-between;font-size:13px"><b style="color:var(--blue)">Affordability</b><span class="soft">comfortable</span></div>
-            <p class="muted" style="font-size:12.5px;margin-top:4px">This is ~24% of your modeled income — well inside the healthy 30% line.</p>
-            <div class="bar"><i></i></div>
-          </div>
-          <button class="btn ghost sm" style="width:100%;margin-top:12px" onclick="toast('Pre-qualification runs a soft pull — no credit impact')">Get mortgage pre-qual →</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ===================== COMMAND CENTER ===================== -->
-<section id="command" class="view">
-  <div class="wrap section">
-    <div class="section-h">
-      <div><span class="eyebrow">Command center</span>
-      <h2 class="serif" style="margin-top:8px">Good morning, Alexander</h2>
-      <p class="muted" style="font-size:14px;margin-top:4px">14 doors · 4 buildings · here's what needs you today.</p></div>
-      <button class="btn primary" onclick="go('list')">+ Add a property</button>
-    </div>
-
-    <div class="dash">
-      <aside class="side">
-        <a class="on">▦ Overview</a>
-        <a onclick="toast('Rent roll view')">◰ Rent roll</a>
-        <a onclick="toast('Leasing pipeline')">⌖ Leasing</a>
-        <a onclick="toast('Maintenance board')">✶ Maintenance</a>
-        <a onclick="toast('Financials & P&L')">$ Financials</a>
-        <div class="sep"></div>
-        <a onclick="go('list')">＋ List a unit</a>
-        <a onclick="toast('Tenant directory')">◎ Tenants</a>
-        <a onclick="toast('Documents & leases')">❑ Documents</a>
-      </aside>
-
-      <div>
-        <div class="kpis">
-          <div class="kpi"><span class="lab">⌂ Occupancy</span><b>96.4%</b><span class="delta up">▲ 2.1% vs last mo</span></div>
-          <div class="kpi"><span class="lab">$ Rent collected</span><b>$61.4k</b><span class="delta up">99.1% on time</span></div>
-          <div class="kpi"><span class="lab">↗ Net operating income</span><b>$48.2k</b><span class="delta up">▲ 6.3%</span></div>
-          <div class="kpi"><span class="lab">✶ Open work orders</span><b>3</b><span class="delta">1 high priority</span></div>
-        </div>
-
-        <div style="display:grid;grid-template-columns:1.5fr 1fr;gap:18px;margin-top:18px">
-          <div class="panel">
-            <h3>Income vs. expenses</h3><p class="sub">Trailing 6 months · portfolio-wide</p>
-            <div class="bars">
-              <div class="b" style="height:62%"><span>Jan</span></div>
-              <div class="b alt" style="height:40%"></div>
-              <div class="b" style="height:70%"><span>Feb</span></div>
-              <div class="b alt" style="height:42%"></div>
-              <div class="b" style="height:66%"><span>Mar</span></div>
-              <div class="b alt" style="height:38%"></div>
-              <div class="b" style="height:78%"><span>Apr</span></div>
-              <div class="b alt" style="height:44%"></div>
-              <div class="b" style="height:82%"><span>May</span></div>
-              <div class="b alt" style="height:41%"></div>
-              <div class="b" style="height:90%"><span>Jun</span></div>
-              <div class="b alt" style="height:43%"></div>
-            </div>
-            <div style="display:flex;gap:20px;margin-top:34px;font-size:12.5px;color:var(--ink-soft)">
-              <span><i class="legend-i" style="display:inline-block;width:10px;height:10px;border-radius:3px;background:var(--accent);margin-right:7px"></i>Income</span>
-              <span><i style="display:inline-block;width:10px;height:10px;border-radius:3px;background:var(--blue);margin-right:7px"></i>Expenses</span>
-            </div>
-          </div>
-          <div class="panel">
-            <h3>Where rent goes</h3><p class="sub">This month</p>
-            <div style="display:flex;gap:22px;align-items:center;margin-top:6px">
-              <div class="donut"><div class="c"><div><b class="serif" style="font-size:24px">72%</b><br><span class="muted" style="font-size:11px">to NOI</span></div></div></div>
-              <div class="legend">
-                <span><i style="background:var(--accent)"></i>Net operating income</span>
-                <span><i style="background:var(--blue)"></i>Maintenance & ops</span>
-                <span><i style="background:var(--rose)"></i>Vacancy loss</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="panel" style="margin-top:18px">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
-            <div><h3>Rent roll</h3><p class="sub" style="margin:0">Live status across every door</p></div>
-            <button class="btn sm" onclick="toast('Reminders sent to 2 tenants')">Nudge late payers</button>
-          </div>
-          <table>
-            <thead><tr><th>Unit</th><th>Tenant</th><th>Rent</th><th>Lease ends</th><th>Status</th></tr></thead>
-            <tbody>
-              <tr><td><b>Maple Row · 214</b></td><td>J. Okafor</td><td><b>$2,750</b></td><td>Mar 2026</td><td><span class="statp s-ok">● Paid</span></td></tr>
-              <tr><td><b>Cedar Ct · 4B</b></td><td>M. Alvarez</td><td><b>$1,980</b></td><td>Aug 2026</td><td><span class="statp s-ok">● Paid</span></td></tr>
-              <tr><td><b>Birch Lofts · 12</b></td><td>D. Nguyen</td><td><b>$2,300</b></td><td>Nov 2025</td><td><span class="statp s-soon">● Renewal due</span></td></tr>
-              <tr><td><b>Cedar Ct · 2A</b></td><td>R. Patel</td><td><b>$1,980</b></td><td>Jun 2026</td><td><span class="statp s-late">● 4 days late</span></td></tr>
-              <tr><td><b>Birch Lofts · 7</b></td><td>—</td><td><b>$2,450</b></td><td>—</td><td><span class="statp s-vac">● Listed · 9 apps</span></td></tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div class="panel" style="margin-top:18px">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
-            <div><h3>Maintenance</h3><p class="sub" style="margin:0">AI-triaged & routed to vendors</p></div>
-            <button class="btn sm" onclick="toast('Vendor dispatched · ETA tomorrow 9am')">Auto-dispatch all</button>
-          </div>
-          <div class="maint"><span class="pri" style="background:var(--rose)"></span>
-            <div style="flex:1"><b>Water heater leaking — Cedar Ct · 2A</b><p class="muted" style="font-size:13px">AI flagged HIGH · likely tank failure · est. $480–$900 · tenant uploaded 2 photos</p></div>
-            <button class="btn sm">Dispatch</button>
-          </div>
-          <div class="maint"><span class="pri" style="background:var(--gold)"></span>
-            <div style="flex:1"><b>HVAC not cooling — Maple Row · 214</b><p class="muted" style="font-size:13px">MEDIUM · filter or refrigerant · scheduled with CoolAir for Thu</p></div>
-            <button class="btn sm">View</button>
-          </div>
-          <div class="maint"><span class="pri" style="background:var(--blue)"></span>
-            <div style="flex:1"><b>Squeaky door — Birch Lofts · 12</b><p class="muted" style="font-size:13px">LOW · added to next routine visit</p></div>
-            <button class="btn sm">View</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ===================== TENANT PORTAL ===================== -->
-<section id="tenant" class="view">
-  <div class="wrap section">
-    <span class="eyebrow">Tenant portal</span>
-    <h2 class="serif" style="font-size:32px;margin-top:8px;margin-bottom:6px">Welcome home, Jordan</h2>
-    <p class="muted" style="font-size:14px">214 Maple Row · lease through March 2026</p>
-
-    <div class="tp-hero" style="margin-top:22px">
-      <span class="pill"><span class="dot"></span> You're all caught up</span>
-      <div class="pay">
-        <div>
-          <p class="muted" style="font-size:13px">Next payment due</p>
-          <div class="serif" style="font-size:34px;margin-top:4px">$2,750</div>
-          <p class="soft" style="font-size:13.5px;margin-top:2px">July 1 · auto-pay on · Visa ••4821</p>
-        </div>
-        <div style="display:flex;gap:10px;flex-wrap:wrap">
-          <button class="btn" onclick="toast('Auto-pay settings opened')">Manage auto-pay</button>
-          <button class="btn primary" onclick="toast('Payment scheduled — receipt emailed')">Pay early</button>
-        </div>
-      </div>
-    </div>
-
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px">
-      <div class="panel">
-        <h3>Report an issue</h3><p class="sub">AI routes it to the right vendor automatically</p>
-        <div class="field"><label>What's going on?</label>
-          <textarea placeholder="e.g. The kitchen faucet drips even when fully off…"></textarea></div>
-        <div class="ai-write" onclick="toast('Tip: add a photo and AI estimates urgency + cost instantly')">📷 Add photos — AI gauges urgency and cost in seconds</div>
-        <button class="btn primary" style="width:100%;margin-top:14px" onclick="toast('Request submitted · ticket #4471 · owner + vendor notified')">Submit request</button>
-      </div>
-      <div class="panel">
-        <h3>Your home</h3><p class="sub">Everything in one place</p>
-        <div class="feat" style="grid-template-columns:1fr">
-          <div style="justify-content:space-between"><span>📄 Lease agreement.pdf</span><button class="btn sm" onclick="toast('Opening document')">View</button></div>
-          <div style="justify-content:space-between"><span>🧾 Payment history (12 mo)</span><button class="btn sm" onclick="toast('Statement downloaded')">Export</button></div>
-          <div style="justify-content:space-between"><span>🔧 Open requests</span><span class="statp s-soon">1 in progress</span></div>
-          <div style="justify-content:space-between"><span>↻ Renewal offer</span><span class="statp s-ok">Ready · +2.5%</span></div>
-        </div>
-        <button class="btn" style="width:100%;margin-top:14px" onclick="toast('Renewal accepted — new lease drafted for e-sign')">Review renewal offer</button>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ===================== LIST A PROPERTY ===================== -->
-<section id="list" class="view">
-  <div class="wrap section">
-    <span class="eyebrow">List a property</span>
-    <h2 class="serif" style="font-size:32px;margin-top:8px;margin-bottom:24px">Publish a listing in minutes — AI does the heavy lifting</h2>
-
-    <div class="steps">
-      <div class="step on"><span class="n">1</span> The basics</div>
-      <div class="step"><span class="n">2</span> Photos & details</div>
-      <div class="step"><span class="n">3</span> Price & screen</div>
-      <div class="step"><span class="n">4</span> Syndicate</div>
-    </div>
-
-    <div style="display:grid;grid-template-columns:1.3fr 1fr;gap:30px;align-items:start">
-      <div class="panel">
-        <div class="two">
-          <div class="field"><label>Address</label><input class="input" value="7 Birch Lofts, Austin TX" /></div>
-          <div class="field"><label>Listing type</label>
-            <select><option>For rent</option><option>For sale</option><option>Room / sublet</option></select></div>
-        </div>
-        <div class="two">
-          <div class="field"><label>Bedrooms</label><input class="input" value="2" /></div>
-          <div class="field"><label>Bathrooms</label><input class="input" value="2" /></div>
-        </div>
-        <div class="field"><label>Monthly rent</label><input class="input" id="listPrice" value="$2,450" /></div>
-        <div class="field">
-          <label>Description</label>
-          <textarea id="listDesc" placeholder="Tell renters about the space…">Bright corner loft with 14-ft ceilings…</textarea>
-          <div class="ai-write" onclick="aiWrite()">✦ Write it for me — AI drafts a high-converting description from your details</div>
-        </div>
-        <button class="btn primary" onclick="toast('Saved — moving to photos & details')">Continue →</button>
-      </div>
-
-      <div>
-        <div class="panel">
-          <h3>✦ AI co-pilot</h3><p class="sub">Live as you type</p>
-          <div class="ai-note" style="margin:0 0 12px"><span>$</span><span><b>Suggested rent: $2,450–$2,610.</b> Comparable 2BR lofts in Birch nearby lease in ~12 days at this price. You're priced to move fast.</span></div>
-          <div class="ai-note" style="margin:0 0 12px;background:rgba(125,184,255,.07);border-color:rgba(125,184,255,.2);color:var(--blue)"><span>◎</span><span><b>Listing health: 78%.</b> Add 4+ photos and a floor plan to reach 95% and rank higher in search.</span></div>
-          <div class="ai-note" style="margin:0;background:rgba(232,201,138,.08);border-color:rgba(232,201,138,.25);color:var(--gold)"><span>⚡</span><span><b>One-click syndication.</b> Publish to HouseMatch + 12 partner networks the moment you hit go.</span></div>
-        </div>
-        <div class="panel" style="margin-top:16px">
-          <h3>Built-in screening</h3><p class="sub">No third-party tools</p>
-          <div class="feat" style="grid-template-columns:1fr">
-            <div>✓ Credit + background (soft-pull friendly)</div>
-            <div>✓ Income & employment verification</div>
-            <div>✓ Auto-rank applicants by fit</div>
-            <div>✓ E-sign lease the same day</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ===================== FOOTER ===================== -->
-<footer class="foot">
-  <div class="wrap">
-    <div class="foot-grid">
-      <div>
-        <div class="brand" style="font-size:18px"><span class="mark"></span> HouseMatch</div>
-        <p style="margin-top:14px;max-width:34ch">The operating system for where you live — discover, finance, manage, and live, all in one place.</p>
-        <div style="margin-top:16px;display:flex;gap:8px"><span class="pill"><span class="dot"></span> housematch.ai</span></div>
-      </div>
-      <div><h5>Discover</h5><a onclick="go('results')">Rent</a><a onclick="go('results')">Buy</a><a onclick="go('detail')">Property pages</a><a onclick="go('discover')">AI search</a></div>
-      <div><h5>Operate</h5><a onclick="go('command')">Command center</a><a onclick="go('tenant')">Tenant portal</a><a onclick="go('list')">List a property</a><a onclick="toast('Screening suite')">Screening</a></div>
-      <div><h5>Company</h5><a onclick="toast('About')">About</a><a onclick="toast('Pricing')">Pricing</a><a onclick="toast('Careers')">Careers</a><a onclick="toast('Contact')">Contact</a></div>
-    </div>
-  </div>
-</footer>
-
+<div class="modal-bg" id="modalBg" onclick="if(event.target===this)closeModal()"><div class="modal" id="modal" style="position:relative"></div></div>
 <div class="toast" id="toast"><span class="dot"></span><span id="toastMsg"></span></div>
 
 <script>
-/* ---------- data ---------- */
-const IMG = n => `https://images.unsplash.com/photo-${n}?auto=format&fit=crop&w=900&q=70`;
-const homes = [
-  {id:1, price:'$2,750', per:'/mo', title:'The Maple Row Residence', addr:'Riverside, Austin TX', bed:3, bath:2, sqft:'1,640', match:94, img:'1568605114967-8130f3a36994', note:'Fenced yard + in-unit laundry, 18-min commute', tag:'Rent'},
-  {id:2, price:'$489,000', per:'', title:'Cedar Court Bungalow', addr:'Travis Heights, Austin TX', bed:2, bath:2, sqft:'1,280', match:91, img:'1570129477492-45c003edd2be', note:'Best value for a first-time buyer in this zone', tag:'Buy'},
-  {id:3, price:'$2,300', per:'/mo', title:'Birch Lofts · Unit 12', addr:'East Side, Austin TX', bed:1, bath:1, sqft:'920', match:88, img:'1502672260266-1c1ef2d93688', note:'Fiber-wired, quiet, ideal work-from-home', tag:'Rent'},
-  {id:4, price:'$615,000', per:'', title:'The Glasshouse', addr:'Clarksville, Austin TX', bed:3, bath:3, sqft:'2,050', match:86, img:'1600585154340-be6161a56a0c', note:'Floor-to-ceiling light, top school zone', tag:'Buy'},
-  {id:5, price:'$1,980', per:'/mo', title:'Willow Walk · 4B', addr:'Mueller, Austin TX', bed:2, bath:1, sqft:'1,040', match:84, img:'1493809842364-78817add7ffb', note:'Walkable, near transit, pet-friendly', tag:'Rent'},
-  {id:6, price:'$720,000', per:'', title:'Riverbend Duplex', addr:'South Lamar, Austin TX', bed:4, bath:3, sqft:'2,400', match:82, img:'1512917774080-9991f1c4c750', note:'Cash-flow positive · live in one, rent the other', tag:'Invest'},
+/* ============ DATA ============ */
+const U=n=>`https://images.unsplash.com/photo-${n}?auto=format&fit=crop&w=1100&q=70`;
+const PH=['1568605114967-8130f3a36994','1570129477492-45c003edd2be','1502672260266-1c1ef2d93688','1600585154340-be6161a56a0c','1493809842364-78817add7ffb','1512917774080-9991f1c4c750','1600566753086-00f18fb6b3ea','1600607687939-ce8a6c25118c','1505691938895-1758d7feb511','1524758631624-e2822e304c36','1600047509807-ba8f99d2cdde','1576941089067-2de3c901e126'];
+let HOMES=[
+ {id:'maple-row',kind:'rent',price:2750,title:'The Maple Row Residence',city:'Riverside, Austin TX',beds:3,baths:2,sqft:1640,match:94,hot:true,img:0,photos:[0,3,2,4,5],note:'Fenced yard + in-unit laundry · 18-min commute',pet:true,days:3,lat:28,lng:34,desc:"A light-filled three-bedroom on a quiet tree-lined street, steps from the river trail. White-oak floors, a chef's kitchen with a gas range, and a fenced backyard that's move-in ready for pets.",amen:['In-unit washer & dryer','Fenced backyard','Gas range + island','EV charger ready','Smart thermostat','Fiber wired','Pet friendly','Dedicated office']},
+ {id:'cedar-court',kind:'buy',price:489000,title:'Cedar Court Bungalow',city:'Travis Heights, Austin TX',beds:2,baths:2,sqft:1280,match:91,img:1,photos:[1,6,7],note:'Best value for a first-time buyer in this zone',pet:true,days:6,lat:52,lng:30,desc:"A turn-key bungalow in one of Austin's most walkable pockets. Renovated kitchen, original hardwoods, and a detached studio perfect for guests or rental income.",amen:['Renovated kitchen','Original hardwoods','Detached studio','Xeriscaped yard','2-car driveway','New roof 2023']},
+ {id:'birch-12',kind:'rent',price:2300,title:'Birch Lofts · Unit 12',city:'East Side, Austin TX',beds:1,baths:1,sqft:920,match:88,img:2,photos:[2,4,9],note:'Fiber-wired, quiet, ideal work-from-home',pet:true,days:1,lat:44,lng:58,desc:"Bright corner loft with soaring 14-ft ceilings and walls of glass. Steps from East Side cafés and transit, fiber-wired and move-in ready.",amen:['14-ft ceilings','Fiber wired','Rooftop deck','Pet friendly','Keyless entry']},
+ {id:'glasshouse',kind:'buy',price:615000,title:'The Glasshouse',city:'Clarksville, Austin TX',beds:3,baths:3,sqft:2050,match:86,img:3,photos:[3,10,5],note:'Floor-to-ceiling light · top school zone',pet:false,days:11,lat:68,lng:46,desc:"An architectural three-bedroom flooded with light. Open-plan living, a chef's kitchen, and a private garden in a top-rated school zone.",amen:['Floor-to-ceiling glass',"Chef's kitchen",'Top school zone','2-car garage','Solar panels','Heated floors']},
+ {id:'willow-4b',kind:'rent',price:1980,title:'Willow Walk · 4B',city:'Mueller, Austin TX',beds:2,baths:1,sqft:1040,match:84,img:4,photos:[4,8,2],note:'Walkable, near transit, pet-friendly',pet:true,days:8,lat:33,lng:70,desc:"A comfortable two-bedroom in master-planned Mueller, steps from parks, transit, and the farmers market.",amen:['Walkable','Near transit','Pet friendly','Community pool','In-unit laundry']},
+ {id:'riverbend',kind:'buy',price:720000,title:'Riverbend Duplex',city:'South Lamar, Austin TX',beds:4,baths:3,sqft:2400,match:82,img:5,photos:[5,11,3],note:'Cash-flow positive · live in one, rent the other',pet:true,days:14,lat:72,lng:68,desc:"A well-maintained duplex with separate meters and a long-term tenant in unit A. House-hack one side or run both for steady cash flow.",amen:['Two 2BR units','Separate meters','Tenant in place','Fenced yards','Off-street parking']},
+ {id:'aspen-7',kind:'rent',price:2450,title:'Aspen House · 7',city:'Hyde Park, Austin TX',beds:2,baths:2,sqft:1180,match:80,img:6,photos:[6,1,7],note:'Historic charm, modern updates',pet:true,days:2,lat:40,lng:22,desc:"Charming Hyde Park two-bed with tall windows, a claw-foot tub, and a wraparound porch. Walk to coffee, parks, and the university.",amen:['Wraparound porch','Updated bath','Hardwoods','Pet friendly','Window AC + mini-split']},
+ {id:'lumen-3',kind:'buy',price:545000,title:'Lumen Row · 3',city:'Bouldin Creek, Austin TX',beds:3,baths:2,sqft:1720,match:78,img:7,photos:[7,0,10],note:'New build, energy-efficient, walk to South Congress',pet:false,days:5,lat:60,lng:54,desc:"A modern new-build townhome with rooftop terrace, two-car garage, and EnergyStar appliances — a block from South Congress.",amen:['Rooftop terrace','2-car garage','EnergyStar','Smart home','Tankless water heater']}
 ];
-const pins = [{x:'28%',y:'34%'},{x:'52%',y:'30%'},{x:'44%',y:'58%'},{x:'68%',y:'46%'},{x:'33%',y:'70%'},{x:'72%',y:'68%'}];
+const RENT_ROLL=[
+ {unit:'Maple Row · 214',tenant:'J. Okafor',rent:2750,ends:'Mar 2026',status:'ok',label:'Paid'},
+ {unit:'Cedar Ct · 4B',tenant:'M. Alvarez',rent:1980,ends:'Aug 2026',status:'ok',label:'Paid'},
+ {unit:'Birch Lofts · 12',tenant:'D. Nguyen',rent:2300,ends:'Nov 2025',status:'soon',label:'Renewal due'},
+ {unit:'Cedar Ct · 2A',tenant:'R. Patel',rent:1980,ends:'Jun 2026',status:'late',label:'4 days late'},
+ {unit:'Birch Lofts · 7',tenant:'— vacant —',rent:2450,ends:'—',status:'new',label:'Listed · filling'}
+];
+let PIPELINE={
+ applied:[{n:'Sarah Chen',m:'Income 3.4x · credit 740',s:92},{n:'Marcus Webb',m:'Income 2.9x · credit 705',s:81},{n:'Lena Ortiz',m:'Income 4.1x · credit 768',s:95}],
+ screening:[{n:'Tom Reyes',m:'Background clear · verifying income',s:88}],
+ approved:[{n:'Priya Shah',m:'Approved · lease sent',s:90}],
+ leased:[]
+};
+const STAGES=['applied','screening','approved','leased'];
+const STAGE_LABEL={applied:'Applied',screening:'Screening',approved:'Approved',leased:'Leased ✓'};
 
-/* ---------- render cards ---------- */
-function card(h){
-  return `<article class="prop" onclick="go('detail')">
-    <div class="ph">
-      <img src="${IMG(h.img)}" alt="" onerror="this.style.display='none'"/>
-      <div class="tag"><span class="badge match">★ ${h.match} Match</span><span class="badge">${h.tag}</span></div>
-      <button class="save" onclick="event.stopPropagation();saveHome(this)" title="Save">♡</button>
-    </div>
-    <div class="body">
-      <div style="display:flex;justify-content:space-between;align-items:baseline">
-        <div class="price">${h.price}<span>${h.per}</span></div>
-      </div>
-      <div class="addr">${h.title} · ${h.addr}</div>
-      <div class="facts"><span><b>${h.bed}</b> bd</span><span><b>${h.bath}</b> ba</span><span><b>${h.sqft}</b> sqft</span></div>
-      <div class="ai-note"><span>✦</span><span>${h.note}</span></div>
-    </div>
-  </article>`;
-}
-document.getElementById('featuredGrid').innerHTML = homes.slice(0,4).map(card).join('');
-document.getElementById('resultsGrid').innerHTML = homes.map(card).join('');
-
-/* pins on map */
-const map = document.getElementById('map');
-homes.forEach((h,i)=>{
-  const p=document.createElement('button');
-  p.className='pin'+(i===0?' on':''); p.style.left=pins[i].x; p.style.top=pins[i].y;
-  p.textContent=h.price; p.onclick=()=>{document.querySelectorAll('.pin').forEach(x=>x.classList.remove('on'));p.classList.add('on');go('detail');};
-  map.appendChild(p);
-});
-
-/* property detail gallery */
-const galleryImgs=['1568605114967-8130f3a36994','1600585154340-be6161a56a0c','1502672260266-1c1ef2d93688','1493809842364-78817add7ffb','1512917774080-9991f1c4c750'];
-document.getElementById('pdGallery').innerHTML = galleryImgs.map(n=>`<div><img src="${IMG(n)}" onerror="this.style.display='none'"/></div>`).join('');
-
-/* ---------- routing ---------- */
-function go(id){
-  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
-  const v=document.getElementById(id)|| document.getElementById('discover');
-  (document.getElementById(id)||document.getElementById('discover')).classList.add('active');
-  document.querySelectorAll('.navlink').forEach(n=>n.classList.toggle('active', n.dataset.nav===id));
-  window.scrollTo({top:0,behavior:'instant'});
-}
-
-/* ---------- search interactions ---------- */
+/* ============ STATE (persisted) ============ */
+const LS=k=>{try{return JSON.parse(localStorage.getItem('hm_'+k))}catch(e){return null}};
+const SS=(k,v)=>{try{localStorage.setItem('hm_'+k,JSON.stringify(v))}catch(e){}};
+let saved=LS('saved')||[];
+let leads=LS('leads')||[];
+let likes=LS('likes')||[];
 let mode='rent';
-function setMode(btn,m){mode=m;document.querySelectorAll('.seg [data-mode]').forEach(b=>b.classList.remove('on'));btn.classList.add('on');}
-function quick(t){document.getElementById('q').value=t;runSearch();}
-function runSearch(){
-  const q=document.getElementById('q').value||'Homes that match your profile';
-  document.getElementById('resultTitle').textContent = q.length>60?q.slice(0,60)+'…':q;
-  const n=180+Math.floor(Math.random()*120);
-  document.getElementById('resultSummary').innerHTML=`AI parsed your request into <b style="color:var(--accent-deep)">7 filters</b> · ${n} matches · sorted by best match`;
-  go('results');
-  toast('AI translated your words into filters');
-}
+function persist(){SS('saved',saved);SS('leads',leads);SS('likes',likes);document.getElementById('savedCount').textContent=saved.length;}
 
-/* ---------- misc ---------- */
-function saveHome(b){b.textContent='♥';b.style.background='var(--accent)';b.style.color='#0a0c08';toast('Saved to your collection');}
-function aiWrite(){
-  document.getElementById('listDesc').value="Light-drenched corner loft with soaring 14-ft ceilings and walls of glass. White-oak floors, a chef's kitchen with a waterfall island, and a private balcony over the courtyard. Steps from East Side cafés and the metro — fiber-wired, pet-friendly, and move-in ready.";
-  toast('AI drafted a description — edit anything you like');
+/* ============ HELPERS ============ */
+const money=n=>'$'+Number(n).toLocaleString();
+const home=id=>HOMES.find(h=>h.id===id);
+function addLead(o){leads.unshift(Object.assign({id:'L'+Date.now(), when:new Date().toLocaleDateString(),status:'New'},o));persist();}
+let toastT;
+function toast(m){const t=document.getElementById('toast');document.getElementById('toastMsg').innerHTML=m;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),2800);}
+function confetti(){const cols=['#c9f257','#7db8ff','#e8c98a','#ff9b8a','#6fe0c5'];for(let i=0;i<70;i++){const c=document.createElement('div');c.className='cf';c.style.left=Math.random()*100+'vw';c.style.background=cols[i%5];c.style.transform=`rotate(${Math.random()*360}deg)`;document.body.appendChild(c);const dur=1600+Math.random()*1400;c.animate([{transform:`translateY(0) rotate(0)`,opacity:1},{transform:`translateY(${window.innerHeight+60}px) rotate(${Math.random()*720}deg)`,opacity:.9}],{duration:dur,easing:'cubic-bezier(.2,.6,.4,1)'}).onfinish=()=>c.remove();}}
+function toggleSave(id,ev){if(ev){ev.stopPropagation();ev.preventDefault();}const i=saved.indexOf(id);if(i>-1){saved.splice(i,1);toast('Removed from saved');}else{saved.push(id);toast('♥ Saved — find it in your matches');}persist();render();}
+
+/* ============ MODAL ============ */
+function openModal(html){document.getElementById('modal').innerHTML='<button class="x" onclick="closeModal()">✕</button>'+html;document.getElementById('modalBg').classList.add('show');}
+function closeModal(){document.getElementById('modalBg').classList.remove('show');}
+function leadForm(kind,id){const h=id?home(id):null;return `
+  <h3>${kind}</h3><p class="muted" style="font-size:13.5px;margin-bottom:16px">${h?h.title+' · '+h.city:'A HouseMatch specialist will reach out within the hour.'}</p>
+  <div class="field"><label>Full name</label><input class="input" id="lf_name" placeholder="Alex Rivera"></div>
+  <div class="two"><div class="field"><label>Email</label><input class="input" id="lf_email" placeholder="you@email.com"></div>
+  <div class="field"><label>Phone</label><input class="input" id="lf_phone" placeholder="(512) 555-0199"></div></div>
+  <div class="field"><label>${kind==='Book a tour'?'Preferred date':'Anything we should know?'}</label><input class="input" id="lf_note" placeholder="${kind==='Book a tour'?'Sat morning works':'Pre-approved, ready to move'}"></div>
+  <button class="btn pri lg" style="width:100%" onclick="submitLead('${kind}','${id||''}')">${kind} →</button>`;}
+function submitLead(kind,id){const n=document.getElementById('lf_name').value||'Guest',e=document.getElementById('lf_email').value;const h=id?home(id):null;addLead({name:n,email:e||'—',source:kind,home:h?h.title:'General',value:h?h.price:0});closeModal();confetti();toast('✓ '+kind+' confirmed — owner notified instantly');}
+
+/* ============ ROUTER ============ */
+const ROUTES=['discover','search','match','owner','tenant','list'];
+const NAV=[['discover','Discover'],['search','Search'],['match','Swipe & Match'],['owner','Command Center'],['tenant','Tenant Portal']];
+function go(route,arg){location.hash=route+(arg?'/'+arg:'');}
+function render(){
+  const parts=(location.hash.replace('#','')||'discover').split('/');
+  let r=parts[0];if(!VIEWS[r])r='discover';
+  document.getElementById('nlinks').innerHTML=NAV.map(([k,l])=>`<button class="nlink ${k===r?'on':''}" onclick="go('${k}')">${l}</button>`).join('');
+  document.getElementById('savedCount').textContent=saved.length;
+  const v=document.getElementById('view');v.className='fade';v.innerHTML=VIEWS[r](parts[1]);
+  window.scrollTo({top:0,behavior:'instant'});
+  if(VIEWS['_after_'+r])VIEWS['_after_'+r](parts[1]);
 }
-let tT;
-function toast(m){const t=document.getElementById('toast');document.getElementById('toastMsg').textContent=m;t.classList.add('show');clearTimeout(tT);tT=setTimeout(()=>t.classList.remove('show'),2600);}
+window.addEventListener('hashchange',render);
+
+/* ============ CARD ============ */
+function card(h){const sv=saved.includes(h.id);return `<article class="prop" onclick="go('property','${h.id}')">
+ <div class="ph"><img src="${U(PH[h.img])}" onerror="this.style.opacity=0" alt="">
+  <div class="tagrow"><span class="badge match">★ ${h.match}</span>${h.hot?'<span class="badge hot">🔥 Hot</span>':''}<span class="badge">${h.kind==='rent'?'Rent':'Buy'}</span></div>
+  <button class="save ${sv?'on':''}" onclick="toggleSave('${h.id}',event)">${sv?'♥':'♡'}</button></div>
+ <div class="body"><div class="price">${money(h.price)}<span>${h.kind==='rent'?' /mo':''}</span></div>
+  <div class="addr">${h.title} · ${h.city}</div>
+  <div class="facts"><span><b>${h.beds}</b> bd</span><span><b>${h.baths}</b> ba</span><span><b>${h.sqft.toLocaleString()}</b> sqft</span><span style="margin-left:auto;color:var(--mute)">${h.days}d ago</span></div>
+  <div class="ai-note"><span>✦</span><span>${h.note}</span></div></div></article>`;}
+
+/* ============ VIEWS ============ */
+const VIEWS={};
+
+VIEWS.discover=()=>`
+<section class="hero"><div class="glow"></div><div class="wrap hero-in">
+ <span class="pill"><span class="dot"></span> One home. One platform. Its entire life.</span>
+ <h1 class="serif htitle" style="margin-top:16px">Find it, finance it, <em>fall for it</em>, fill it.</h1>
+ <p class="hsub">HouseMatch makes house-hunting actually fun — swipe to match, run the numbers in a tap, book a tour in seconds. And underneath it, a command center that fills your units and never drops a lead.</p>
+ <div class="searchbox">
+  <div class="seg">${['rent','buy','invest'].map(m=>`<button class="${m===mode?'on':''}" onclick="setMode('${m}')">${m[0].toUpperCase()+m.slice(1)}</button>`).join('')}</div>
+  <div class="srow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3-3"/></svg>
+   <input id="q" placeholder="“2-bed with a yard, under $2,800, pet-friendly, near good schools”" onkeydown="if(event.key==='Enter')doSearch()">
+   <button class="btn pri" onclick="doSearch()">Search →</button></div>
+  <div class="chips">
+   <button class="chip" onclick="quick('pet friendly with a yard under 2800')">✦ Pet-friendly + yard</button>
+   <button class="chip" onclick="quick('best value 2 bed for a first-time buyer')">✦ First-time buyer</button>
+   <button class="chip" onclick="quick('work from home fiber office quiet')">✦ WFH ready</button>
+   <button class="chip" onclick="go('match')">✦ Just let me swipe</button></div>
+ </div>
+ <div class="stats">
+  <div class="stat"><b>1.4M</b><span>active homes & rentals</span></div>
+  <div class="stat"><b>92%</b><span>avg. match accuracy</span></div>
+  <div class="stat"><b>11 min</b><span>median list-to-live</span></div>
+  <div class="stat"><b>3×</b><span>faster to fill a vacancy</span></div></div>
+</div></section>
+
+<section class="wrap section" style="padding-top:26px">
+ <div class="sh"><div><span class="eyebrow">The whole lifecycle</span><h2 class="serif" style="margin-top:9px">Most apps own one moment. HouseMatch owns the whole home.</h2></div>
+  <button class="btn" onclick="go('owner')">See the command center →</button></div>
+ <div class="life-g">
+  <div class="life" onclick="go('match')"><span class="n">01</span><div class="ic">⌖</div><h4>Discover</h4><p>Swipe to match, AI scoring, and a map that learns what you actually mean.</p></div>
+  <div class="life" onclick="go('property','maple-row')"><span class="n">02</span><div class="ic">◫</div><h4>Decide & finance</h4><p>Live affordability, a real mortgage calculator, and one-tap tours.</p></div>
+  <div class="life" onclick="go('owner')"><span class="n">03</span><div class="ic">▦</div><h4>Fill & manage</h4><p>Occupancy pipeline, rent roll, and a lead inbox that never goes cold.</p></div>
+  <div class="life" onclick="go('tenant')"><span class="n">04</span><div class="ic">✶</div><h4>Live</h4><p>Tenants pay rent, report issues, and renew in a great consumer app.</p></div></div>
+</section>
+
+<section class="wrap section" style="padding-top:0">
+ <div class="sh"><div><span class="eyebrow">Curated for you</span><h2 class="serif" style="margin-top:9px">Homes our match model thinks you'll love</h2></div>
+  <button class="btn" onclick="go('search')">Browse all →</button></div>
+ <div class="grid">${HOMES.slice(0,6).map(card).join('')}</div>
+</section>
+
+<section class="wrap" style="padding-bottom:30px">
+ <div class="card" style="padding:32px;display:grid;grid-template-columns:1.3fr 1fr;gap:32px;align-items:center;background:radial-gradient(120% 140% at 0 0,rgba(125,184,255,.1),transparent 55%),var(--panel)">
+  <div><span class="eyebrow">For owners & managers</span>
+   <h2 class="serif" style="font-size:30px;margin:11px 0">Fill 1 unit or 1,000 — and capture every lead while they're hot.</h2>
+   <p class="soft" style="max-width:48ch">List once and syndicate everywhere, watch applicants flow into a pipeline you can advance with one tap, and turn tour-bookers into signed leases. The management layer that pays for the search.</p>
+   <div style="display:flex;gap:10px;margin-top:18px"><button class="btn pri" onclick="go('owner')">Open command center</button><button class="btn" onclick="go('list')">List a property</button></div></div>
+  <div class="kpis" style="grid-template-columns:1fr 1fr">
+   <div class="kpi"><span class="l">Occupancy</span><b>96.4%</b><span class="d up">▲ 2.1% MoM</span></div>
+   <div class="kpi"><span class="l">Leads this wk</span><b id="kLeads">—</b><span class="d up">live capture</span></div>
+   <div class="kpi"><span class="l">Collected</span><b>99.1%</b><span class="d up">on time</span></div>
+   <div class="kpi"><span class="l">Days to fill</span><b>9</b><span class="d up">▼ from 27</span></div></div>
+ </div></section>`;
+VIEWS._after_discover=()=>{const k=document.getElementById('kLeads');if(k)k.textContent=(leads.length+5);};
+
+function setMode(m){mode=m;render();}
+function quick(t){go('search');setTimeout(()=>{const q=document.getElementById('sq');if(q){q.value=t;applyParsed(t);}},60);}
+function doSearch(){const t=(document.getElementById('q')||{}).value||'';go('search');setTimeout(()=>{const q=document.getElementById('sq');if(q){q.value=t;applyParsed(t);}},60);}
+
+/* ---- SEARCH ---- */
+let SF={kind:'all',min:0,max:1000000,beds:0,pet:false,sort:'match',q:''};
+function applyParsed(t){const s=t.toLowerCase();SF.pet=/pet|dog|cat/.test(s);const b=s.match(/(\d)\s*(bed|br|bedroom)/);if(b)SF.beds=+b[1];if(/buy|first-time|purchase/.test(s))SF.kind='buy';else if(/rent/.test(s))SF.kind='rent';const m=s.match(/(?:under|below)\s*\$?\s*([\d,]+)/);if(m)SF.max=+m[1].replace(/,/g,'');SF.q=t;syncFilterUI();renderResults();toast('✦ AI turned your words into filters');}
+function readFilters(){SF.kind=val('f_kind');SF.min=+val('f_min')||0;SF.max=+val('f_max')||1000000;SF.beds=+val('f_beds')||0;SF.pet=document.getElementById('f_pet').checked;SF.sort=val('f_sort');renderResults();}
+const val=id=>{const e=document.getElementById(id);return e?e.value:'';};
+function syncFilterUI(){if(document.getElementById('f_kind')){document.getElementById('f_kind').value=SF.kind;document.getElementById('f_beds').value=SF.beds;document.getElementById('f_pet').checked=SF.pet;if(SF.max<1000000)document.getElementById('f_max').value=SF.max;}}
+function filtered(){let r=HOMES.filter(h=>(SF.kind==='all'||h.kind===SF.kind||(SF.kind==='invest'&&h.kind==='buy'))&&h.price>=SF.min&&h.price<=SF.max&&h.beds>=SF.beds&&(!SF.pet||h.pet));
+ r.sort((a,b)=>SF.sort==='price'?a.price-b.price:SF.sort==='new'?a.days-b.days:b.match-a.match);return r;}
+VIEWS.search=()=>`
+<section class="wrap section">
+ <div class="sh"><div><span class="eyebrow">Search</span><h2 class="serif" style="margin-top:8px;font-size:30px">Find your place</h2></div>
+  <button class="btn" onclick="go('match')">Prefer to swipe? →</button></div>
+ <div class="filters">
+  <div class="srow" style="margin:0;flex:1;min-width:240px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--mute)" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3-3"/></svg><input id="sq" placeholder="Describe your dream home…" onkeydown="if(event.key==='Enter')applyParsed(this.value)" style="font-size:14px;padding:10px 4px"><button class="btn pri sm" onclick="applyParsed(document.getElementById('sq').value)">Go</button></div>
+  <div class="fctrl"><label>Type</label><select class="fin" id="f_kind" onchange="readFilters()"><option value="all">All</option><option value="rent">Rent</option><option value="buy">Buy</option></select></div>
+  <div class="fctrl"><label>Min $</label><input class="fin" id="f_min" style="width:90px" placeholder="0" onchange="readFilters()"></div>
+  <div class="fctrl"><label>Max $</label><input class="fin" id="f_max" style="width:100px" placeholder="Any" onchange="readFilters()"></div>
+  <div class="fctrl"><label>Beds</label><select class="fin" id="f_beds" onchange="readFilters()"><option value="0">Any</option><option value="1">1+</option><option value="2">2+</option><option value="3">3+</option></select></div>
+  <div class="fctrl"><label>Pets</label><label style="display:flex;align-items:center;gap:6px;font-size:13px;color:var(--soft);padding:8px 0"><input type="checkbox" id="f_pet" onchange="readFilters()" style="accent-color:var(--accent)"> OK</label></div>
+  <div class="fctrl"><label>Sort</label><select class="fin" id="f_sort" onchange="readFilters()"><option value="match">Best match</option><option value="price">Price</option><option value="new">Newest</option></select></div>
+ </div>
+ <div class="layout"><div><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px"><p class="muted" id="rcount" style="font-size:14px"></p><button class="btn gho sm" onclick="resetFilters()">Reset</button></div><div class="grid" id="results"></div></div>
+  <div class="maprail"><div class="map" id="map"><div class="gl"></div><div class="road" style="left:0;right:0;top:46%;height:9px"></div><div class="road" style="top:0;bottom:0;left:40%;width:9px"></div></div>
+   <div class="card" style="padding:15px;margin-top:13px"><div style="display:flex;gap:8px;align-items:center;font-size:13px"><span class="dot"></span><b>Commute lens</b></div><p class="muted" style="font-size:12.5px;margin-top:7px">Pins are shaded by drive time to your work address. Tap one to preview.</p></div></div>
+ </div>
+</section>`;
+VIEWS._after_search=()=>{syncFilterUI();renderResults();};
+function renderResults(){const r=filtered();const el=document.getElementById('results');if(!el)return;el.innerHTML=r.length?r.map(card).join(''):'<p class="muted" style="padding:30px">No homes match — try widening your filters.</p>';document.getElementById('rcount').innerHTML=`<b style="color:var(--ink)">${r.length}</b> home${r.length!==1?'s':''} · sorted by ${SF.sort==='match'?'best match':SF.sort}`;const map=document.getElementById('map');if(map){map.querySelectorAll('.pin').forEach(p=>p.remove());r.forEach(h=>{const p=document.createElement('button');p.className='pin';p.style.left=h.lng+'%';p.style.top=h.lat+'%';p.textContent=h.kind==='rent'?'$'+(h.price/1000).toFixed(1)+'k':'$'+Math.round(h.price/1000)+'k';p.onclick=()=>go('property',h.id);map.appendChild(p);});}}
+function resetFilters(){SF={kind:'all',min:0,max:1000000,beds:0,pet:false,sort:'match',q:''};syncFilterUI();const mn=document.getElementById('f_min'),mx=document.getElementById('f_max'),sq=document.getElementById('sq');if(mn)mn.value='';if(mx)mx.value='';if(sq)sq.value='';renderResults();}
+function renderResults_safe(){try{renderResults()}catch(e){}}
+
+/* ---- MATCH / SWIPE ---- */
+let swipeIdx=0,swipeDeck=[];
+VIEWS.match=()=>{swipeDeck=HOMES.filter(h=>!likes.includes(h.id));swipeIdx=0;return `
+<section class="wrap section">
+ <div style="text-align:center;max-width:560px;margin:0 auto 22px"><span class="eyebrow">Swipe & match</span>
+  <h2 class="serif" style="font-size:32px;margin-top:9px">Swipe right on homes you love</h2>
+  <p class="muted" style="margin-top:6px">→ or ♥ to save · ← or ✕ to skip · we learn your taste as you go.</p></div>
+ <div class="swipe-wrap" id="deck"></div>
+ <div class="swipe-ctrls"><button class="scbtn no" onclick="swipe('no')">✕</button><button class="scbtn info2" onclick="if(swipeDeck[swipeIdx])go('property',swipeDeck[swipeIdx].id)">ⓘ</button><button class="scbtn yes" onclick="swipe('yes')">♥</button></div>
+ <p class="muted" id="swipeProg" style="text-align:center;margin-top:16px;font-size:13px"></p>
+</section>`;};
+VIEWS._after_match=()=>{renderDeck();window.onkeydown=e=>{if(location.hash.includes('match')){if(e.key==='ArrowRight')swipe('yes');if(e.key==='ArrowLeft')swipe('no');}};};
+function renderDeck(){const d=document.getElementById('deck');if(!d)return;if(swipeIdx>=swipeDeck.length){d.innerHTML=`<div class="swipe-card" style="display:grid;place-items:center;text-align:center;padding:30px"><div><div style="font-size:40px;margin-bottom:10px">🎉</div><h3 class="serif" style="font-size:26px">That's everyone!</h3><p class="muted" style="margin:8px 0 18px">You liked ${likes.length} home${likes.length!==1?'s':''}. We'll keep matching you to more like them.</p><button class="btn pri" onclick="openLeads()">See your matches</button> <button class="btn" onclick="go('search')">Back to search</button></div></div>`;document.getElementById('swipeProg').textContent='';return;}
+ const top=swipeDeck.slice(swipeIdx,swipeIdx+2).reverse();
+ d.innerHTML=top.map((h,i)=>{const isTop=i===top.length-1;return `<div class="swipe-card" data-top="${isTop}" style="transform:scale(${isTop?1:.95}) translateY(${isTop?0:14}px)">
+   <div class="stamp like">LOVE</div><div class="stamp nope">NOPE</div>
+   <div class="img"><img src="${U(PH[h.img])}" onerror="this.style.opacity=0"><div class="grad"></div>
+    <div class="info"><div style="display:flex;gap:6px;margin-bottom:8px"><span class="badge match">★ ${h.match} match</span><span class="badge">${h.kind==='rent'?'Rent':'Buy'}</span></div>
+     <div class="price" style="font-size:26px;color:#fff">${money(h.price)}<span style="color:#cfd3c9">${h.kind==='rent'?' /mo':''}</span></div>
+     <div style="color:#e7ebe1;font-size:14px;margin-top:2px">${h.title} · ${h.city}</div></div></div>
+   <div class="body"><div class="facts" style="border:none;margin:0;padding:0;font-size:13px"><span><b>${h.beds}</b> bd</span><span><b>${h.baths}</b> ba</span><span><b>${h.sqft.toLocaleString()}</b> sqft</span><span style="margin-left:auto">${h.pet?'🐾 pet ok':''}</span></div>
+    <div class="ai-note" style="margin-top:11px">✦ ${h.note}</div></div></div>`;}).join('');
+ document.getElementById('swipeProg').textContent=`${swipeIdx+1} of ${swipeDeck.length} · ${likes.length} loved`;}
+function swipe(dir){if(swipeIdx>=swipeDeck.length)return;const cards=document.querySelectorAll('.swipe-card');const topCard=[...cards].find(c=>c.dataset.top==='true');const h=swipeDeck[swipeIdx];if(topCard){const st=topCard.querySelector(dir==='yes'?'.stamp.like':'.stamp.nope');if(st)st.style.opacity=1;topCard.style.transform=`translateX(${dir==='yes'?600:-600}px) rotate(${dir==='yes'?18:-18}deg)`;topCard.style.opacity=0;}
+ if(dir==='yes'){if(!likes.includes(h.id))likes.push(h.id);if(!saved.includes(h.id))saved.push(h.id);persist();toast('♥ Loved '+h.title);}
+ swipeIdx++;setTimeout(renderDeck,300);}
+
+/* ---- PROPERTY ---- */
+VIEWS.property=(id)=>{const h=home(id);if(!h)return '<section class="wrap section"><p>Home not found. <a onclick="go(\'search\')" style="color:var(--accent);cursor:pointer">Back to search</a></p></section>';const sv=saved.includes(h.id);
+ return `<section class="wrap section">
+ <button class="btn gho sm" onclick="history.back()" style="margin-bottom:14px">← Back</button>
+ <div class="pd-g">${h.photos.slice(0,5).map(p=>`<div><img src="${U(PH[p])}" onerror="this.style.opacity=0"></div>`).join('')}</div>
+ <div class="pd-grid"><div>
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:18px">
+   <div><div style="display:flex;gap:6px"><span class="badge match" style="position:static">★ ${h.match} match</span>${h.hot?'<span class="badge hot" style="position:static">🔥 Hot</span>':''}</div>
+    <h1 class="serif" style="font-size:32px;margin-top:11px;letter-spacing:-.02em">${h.title}</h1>
+    <p class="soft" style="font-size:14.5px;margin-top:3px">${h.city}</p></div>
+   <div class="ring" style="background:conic-gradient(var(--accent) ${h.match}%,rgba(255,255,255,.08) 0)"><b>${h.match}</b></div></div>
+  <div class="kv"><div><b>${money(h.price)}</b><span>${h.kind==='rent'?'per month':'price'}</span></div><div><b>${h.beds}</b><span>beds</span></div><div><b>${h.baths}</b><span>baths</span></div><div><b>${h.sqft.toLocaleString()}</b><span>sq ft</span></div><div><b>${h.days}d</b><span>on market</span></div></div>
+  <div class="ai-note" style="margin:0 0 18px"><span>✦</span><span><b>Why it matches you:</b> ${h.note}. Modeled commute, school zone, and affordability all check out.</span></div>
+  <p class="soft" style="font-size:15px;line-height:1.6">${h.desc}</p>
+  <h3 class="serif" style="font-size:20px;margin:24px 0 4px">Features</h3>
+  <div class="feat">${h.amen.map(a=>`<div>✓ ${a}</div>`).join('')}</div>
+  <h3 class="serif" style="font-size:20px;margin:26px 0 12px">Neighborhood intelligence</h3>
+  <div class="kpis">${[['Walk score',88,'Very walkable'],['Schools','9/10','Top zone'],['Commute','18m','to your work'],['Noise','Low','quiet street']].map(([l,v,s])=>`<div class="kpi"><span class="l">${l}</span><b>${v}</b><span class="d up">${s}</span></div>`).join('')}</div>
+ </div>
+ <div class="book"><div class="panel">
+   <div style="display:flex;justify-content:space-between;align-items:baseline"><div class="price">${money(h.price)}<span>${h.kind==='rent'?' /mo':''}</span></div><span class="statp s-ok">Available</span></div>
+   <button class="btn pri lg" style="width:100%;margin-top:14px" onclick="openModal(leadForm('Book a tour','${h.id}'))">Book a tour</button>
+   <button class="btn lg" style="width:100%;margin-top:9px" onclick="openModal(leadForm('${h.kind==='rent'?'Apply now':'Get pre-qualified'}','${h.id}'))">${h.kind==='rent'?'Apply in 1 tap':'Get pre-qualified'}</button>
+   <button class="btn gho sm" style="width:100%;margin-top:9px" onclick="toggleSave('${h.id}')">${sv?'♥ Saved':'♡ Save this home'}</button>
+   <div style="border-top:1px solid var(--line);margin-top:16px;padding-top:16px">
+    <div style="font-weight:600;font-size:14px;margin-bottom:10px">💸 ${h.kind==='rent'?'Affordability':'Mortgage'} calculator</div>
+    ${h.kind==='buy'?`
+     <label class="muted" style="font-size:12px">Down payment: <b id="dpv" style="color:var(--ink)">20%</b></label>
+     <input type="range" class="range" id="dp" min="5" max="50" value="20" oninput="calcMortgage('${h.id}')">
+     <label class="muted" style="font-size:12px;margin-top:8px;display:block">Rate: <b id="rtv" style="color:var(--ink)">6.5%</b></label>
+     <input type="range" class="range" id="rt" min="4" max="9" step="0.1" value="6.5" oninput="calcMortgage('${h.id}')">
+     <div class="row" style="margin-top:12px"><span>Loan amount</span><b id="loanv">—</b></div>
+     <div class="row"><span>Est. monthly (P&I)</span><b id="mov" style="color:var(--accent)">—</b></div>
+     <div class="row tot"><span>Cash to close</span><b id="closev">—</b></div>`
+    :`
+     <label class="muted" style="font-size:12px">Your monthly income: <b id="incv" style="color:var(--ink)">$9,000</b></label>
+     <input type="range" class="range" id="inc" min="4000" max="20000" step="250" value="9000" oninput="calcAfford('${h.id}')">
+     <div class="row" style="margin-top:12px"><span>Rent-to-income</span><b id="rtiv">—</b></div>
+     <div class="row tot"><span>Verdict</span><b id="verdictv" style="color:var(--accent)">—</b></div>`}
+   </div>
+ </div></div></div></section>`;};
+VIEWS._after_property=(id)=>{const h=home(id);if(!h)return;if(h.kind==='buy')calcMortgage(id);else calcAfford(id);};
+function calcMortgage(id){const h=home(id);const dp=+document.getElementById('dp').value,rt=+document.getElementById('rt').value;document.getElementById('dpv').textContent=dp+'%';document.getElementById('rtv').textContent=rt+'%';const loan=h.price*(1-dp/100);const r=rt/100/12,n=360;const m=loan*r*Math.pow(1+r,n)/(Math.pow(1+r,n)-1);document.getElementById('loanv').textContent=money(Math.round(loan));document.getElementById('mov').textContent=money(Math.round(m))+'/mo';document.getElementById('closev').textContent=money(Math.round(h.price*dp/100+h.price*0.03));}
+function calcAfford(id){const h=home(id);const inc=+document.getElementById('inc').value;document.getElementById('incv').textContent=money(inc);const rti=Math.round(h.price/inc*100);document.getElementById('rtiv').textContent=rti+'% of income';const v=document.getElementById('verdictv');if(rti<=30){v.textContent='Comfortable ✓';v.style.color='var(--accent)';}else if(rti<=40){v.textContent='A stretch';v.style.color='var(--gold)';}else{v.textContent='Over budget';v.style.color='var(--rose)';}}
+
+/* ---- OWNER / COMMAND CENTER ---- */
+let ownerTab='overview';
+VIEWS.owner=()=>{return `<section class="wrap section">
+ <div class="sh"><div><span class="eyebrow">Command center</span><h2 class="serif" style="margin-top:8px">Good morning, Alexander</h2><p class="muted" style="font-size:14px;margin-top:4px">14 doors · 4 buildings · ${leads.length} new lead${leads.length!==1?'s':''} waiting.</p></div>
+  <button class="btn pri" onclick="go('list')">+ Add a property</button></div>
+ <div class="dash"><aside class="side">${[['overview','▦ Overview'],['occupancy','⌖ Occupancy & leasing'],['leads','✦ Lead inbox'],['rentroll','◰ Rent roll'],['maint','✶ Maintenance']].map(([k,l])=>`<a class="${ownerTab===k?'on':''}" onclick="ownerTab='${k}';render()">${l}</a>`).join('')}</aside>
+  <div id="ownerBody">${ownerBody()}</div></div></section>`;};
+function ownerBody(){
+ if(ownerTab==='overview')return `
+  <div class="kpis"><div class="kpi"><span class="l">⌂ Occupancy</span><b>96.4%</b><span class="d up">▲ 2.1% MoM</span></div><div class="kpi"><span class="l">$ Collected</span><b>$61.4k</b><span class="d up">99.1% on time</span></div><div class="kpi"><span class="l">↗ NOI / mo</span><b>$48.2k</b><span class="d up">▲ 6.3%</span></div><div class="kpi"><span class="l">✦ New leads</span><b>${leads.length+5}</b><span class="d up">capture live</span></div></div>
+  <div style="display:grid;grid-template-columns:1.5fr 1fr;gap:18px;margin-top:18px">
+   <div class="panel"><h3 style="font-size:16px">Income vs. expenses</h3><p class="muted" style="font-size:13px;margin-bottom:14px">Trailing 6 months</p><div class="bars">${[62,40,70,42,66,38,78,44,82,41,90,43].map((b,i)=>`<div class="b ${i%2?'alt':''}" style="height:${b}%"></div>`).join('')}</div><div style="display:flex;gap:18px;margin-top:14px;font-size:12.5px;color:var(--soft)"><span><i class="lg-i" style="background:var(--accent)"></i>Income</span><span><i class="lg-i" style="background:var(--blue)"></i>Expenses</span></div></div>
+   <div class="panel"><h3 style="font-size:16px">Where rent goes</h3><p class="muted" style="font-size:13px;margin-bottom:14px">This month</p><div style="display:flex;gap:20px;align-items:center"><div class="donut" style="background:conic-gradient(var(--accent) 0 72%,var(--blue) 72% 89%,var(--rose) 89% 100%)"><div class="c"><div><b class="serif" style="font-size:23px">72%</b><br><span class="muted" style="font-size:11px">to NOI</span></div></div></div><div style="display:flex;flex-direction:column;gap:9px;font-size:13px;color:var(--soft)"><span><i class="lg-i" style="background:var(--accent)"></i>NOI</span><span><i class="lg-i" style="background:var(--blue)"></i>Ops</span><span><i class="lg-i" style="background:var(--rose)"></i>Vacancy</span></div></div></div></div>
+  <div class="panel" style="margin-top:18px"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><h3 style="font-size:16px">Fill your vacancy</h3><button class="btn sm" onclick="ownerTab='occupancy';render()">Open pipeline →</button></div><p class="muted" style="font-size:13px">Birch Lofts · 7 is listed at $2,450 with <b style="color:var(--accent2)">${PIPELINE.applied.length+PIPELINE.screening.length} active applicants</b>. Advance them to lease in a tap.</p></div>`;
+ if(ownerTab==='occupancy')return `
+  <div class="panel" style="margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px"><div><h3 style="font-size:16px">Birch Lofts · Unit 7 — filling now</h3><p class="muted" style="font-size:13px">$2,450/mo · listed ${'3'} days ago · drag-free pipeline, tap to advance</p></div><span class="statp s-new">● ${PIPELINE.applied.length+PIPELINE.screening.length+PIPELINE.approved.length} in funnel</span></div>
+  <div class="pipe">${STAGES.map(s=>`<div class="col"><h5>${STAGE_LABEL[s]}<span>${PIPELINE[s].length}</span></h5>${PIPELINE[s].map((a,i)=>`<div class="appcard"><div class="nm">${a.n}</div><div class="meta">${a.m}</div><span class="sco">fit ${a.s}</span>${s!=='leased'?`<button class="adv" onclick="advance('${s}',${i})">Advance to ${STAGE_LABEL[STAGES[STAGES.indexOf(s)+1]].replace(' ✓','')} →</button>`:'<div style="margin-top:9px;font-size:12px;color:var(--accent2)">✓ Lease signed</div>'}</div>`).join('')||'<p class="muted" style="font-size:12px;padding:6px">Empty</p>'}</div>`).join('')}</div>
+  <p class="muted" style="font-size:12.5px;margin-top:12px">When you advance someone to <b style="color:var(--accent2)">Leased</b>, occupancy ticks up and the unit comes off market — that's the whole game.</p>`;
+ if(ownerTab==='leads')return `
+  <div class="panel"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px"><div><h3 style="font-size:16px">Lead inbox</h3><p class="muted" style="font-size:13px">Every tour, application, and pre-qual lands here instantly</p></div><button class="btn sm" onclick="toast('Follow-ups sent to all new leads')">⚡ Auto-follow-up all</button></div>
+   <table><thead><tr><th>Lead</th><th>Source</th><th>Interested in</th><th>When</th><th>Status</th></tr></thead><tbody>
+   ${(leads.length?leads:[{name:'(no leads yet)',source:'—',home:'Book a tour on any home to see it appear here',when:'',status:''}]).map(l=>`<tr><td><b>${l.name}</b><div style="font-size:11.5px;color:var(--mute)">${l.email||''}</div></td><td>${l.source}</td><td>${l.home}</td><td>${l.when}</td><td>${l.status?`<span class="statp s-new">● ${l.status}</span>`:''}</td></tr>`).join('')}
+   ${SEED_LEADS.map(l=>`<tr><td><b>${l.name}</b><div style="font-size:11.5px;color:var(--mute)">${l.email}</div></td><td>${l.source}</td><td>${l.home}</td><td>${l.when}</td><td><span class="statp ${l.s}">● ${l.status}</span></td></tr>`).join('')}
+   </tbody></table></div>`;
+ if(ownerTab==='rentroll')return `
+  <div class="panel"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px"><div><h3 style="font-size:16px">Rent roll</h3><p class="muted" style="font-size:13px">Live status across every door</p></div><button class="btn sm" onclick="toast('Reminders sent to late payers')">Nudge late payers</button></div>
+   <table><thead><tr><th>Unit</th><th>Tenant</th><th>Rent</th><th>Lease ends</th><th>Status</th></tr></thead><tbody>${RENT_ROLL.map(r=>`<tr><td><b>${r.unit}</b></td><td>${r.tenant}</td><td><b>${money(r.rent)}</b></td><td>${r.ends}</td><td><span class="statp s-${r.status}">● ${r.label}</span></td></tr>`).join('')}</tbody></table></div>`;
+ if(ownerTab==='maint')return `
+  <div class="panel"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px"><div><h3 style="font-size:16px">Maintenance</h3><p class="muted" style="font-size:13px">AI-triaged & routed to vendors</p></div><button class="btn sm" onclick="toast('Vendors dispatched · ETAs sent')">Auto-dispatch all</button></div>
+   ${[['var(--rose)','Water heater leaking — Cedar Ct · 2A','HIGH · likely tank failure · est. $480–$900 · 2 photos'],['var(--gold)','HVAC not cooling — Maple Row · 214','MEDIUM · scheduled with CoolAir Thu'],['var(--blue)','Squeaky door — Birch Lofts · 12','LOW · added to next routine visit']].map(([c,t,d])=>`<div style="display:flex;gap:12px;padding:13px;border:1px solid var(--line);border-radius:11px;margin-bottom:10px;align-items:flex-start"><span style="width:9px;height:9px;border-radius:50%;background:${c};margin-top:6px"></span><div style="flex:1"><b style="font-size:13.5px">${t}</b><p class="muted" style="font-size:12.5px">${d}</p></div><button class="btn sm">View</button></div>`).join('')}</div>`;
+ return '';
+}
+const SEED_LEADS=[{name:'Jamie Fox',email:'jamie@email.com',source:'Book a tour',home:'The Glasshouse',when:'today',status:'Contacted',s:'s-ok'},{name:'Priya N.',email:'priya@email.com',source:'Get pre-qualified',home:'Cedar Court Bungalow',when:'yesterday',status:'Hot',s:'s-late'},{name:'Devon R.',email:'devon@email.com',source:'Apply now',home:'Birch Lofts · 7',when:'2d ago',status:'Screening',s:'s-soon'}];
+function advance(stage,i){const idx=STAGES.indexOf(stage);const next=STAGES[idx+1];const a=PIPELINE[stage].splice(i,1)[0];PIPELINE[next].push(a);if(next==='leased'){confetti();toast('🎉 '+a.n+' signed — unit filled, occupancy up!');}else{toast(a.n+' → '+STAGE_LABEL[next]);}render();}
+
+/* ---- TENANT ---- */
+VIEWS.tenant=()=>`<section class="wrap section">
+ <span class="eyebrow">Tenant portal</span><h2 class="serif" style="font-size:32px;margin-top:8px;margin-bottom:5px">Welcome home, Jordan</h2>
+ <p class="muted" style="font-size:14px">214 Maple Row · lease through March 2026</p>
+ <div style="border-radius:18px;padding:28px;border:1px solid var(--line);margin-top:20px;background:radial-gradient(120% 140% at 100% 0,rgba(201,242,87,.12),transparent 55%),var(--panel)">
+  <span class="pill"><span class="dot"></span> You're all caught up</span>
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-top:18px;background:#0c0e0c;border:1px solid var(--line2);border-radius:14px;padding:20px">
+   <div><p class="muted" style="font-size:13px">Next payment due</p><div class="serif" style="font-size:32px;margin-top:4px">$2,750</div><p class="soft" style="font-size:13px;margin-top:2px">July 1 · auto-pay on · Visa ••4821</p></div>
+   <div style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn" onclick="toast('Auto-pay settings opened')">Manage auto-pay</button><button class="btn pri" onclick="confetti();toast('✓ Payment scheduled — receipt emailed')">Pay early</button></div></div></div>
+ <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px" class="two">
+  <div class="panel"><h3 style="font-size:16px">Report an issue</h3><p class="muted" style="font-size:13px;margin-bottom:14px">AI routes it to the right vendor automatically</p>
+   <div class="field"><label>What's going on?</label><textarea id="mIssue" placeholder="e.g. The kitchen faucet drips even when fully off…"></textarea></div>
+   <div id="mTriage"></div>
+   <button class="btn pri" style="width:100%;margin-top:12px" onclick="submitIssue()">Submit request</button></div>
+  <div class="panel"><h3 style="font-size:16px">Your home</h3><p class="muted" style="font-size:13px;margin-bottom:14px">Everything in one place</p>
+   <div class="feat" style="grid-template-columns:1fr">
+    <div style="display:flex;justify-content:space-between;align-items:center">📄 Lease agreement.pdf <button class="btn sm" onclick="toast('Opening document')">View</button></div>
+    <div style="display:flex;justify-content:space-between;align-items:center">🧾 Payment history <button class="btn sm" onclick="toast('Statement exported')">Export</button></div>
+    <div style="display:flex;justify-content:space-between;align-items:center">🔧 Open requests <span class="statp s-soon">1 in progress</span></div>
+    <div style="display:flex;justify-content:space-between;align-items:center">↻ Renewal offer <span class="statp s-ok">Ready · +2.5%</span></div></div>
+   <button class="btn" style="width:100%;margin-top:14px" onclick="confetti();toast('✓ Renewal accepted — new lease drafted for e-sign')">Review renewal offer</button></div></div>
+</section>`;
+function submitIssue(){const t=(document.getElementById('mIssue').value||'').toLowerCase();let pri='LOW',note='Routine — batched with the next scheduled visit.';if(/(leak|flood|gas|fire|no heat|no water|electric|spark|smoke)/.test(t)){pri='HIGH';note='Safety-relevant — same-day vendor dispatch recommended.';}else if(/(ac|heat|hvac|cool|fridge|stove|appliance|hot water)/.test(t)){pri='MEDIUM';note='Comfort issue — vendor scheduled within 48h.';}document.getElementById('mTriage').innerHTML=`<div class="ai-note" style="margin:0">✦ AI triage: <b style="margin:0 4px">${pri}</b> — ${note}</div>`;addLead({name:'Jordan (tenant)',email:'jordan@email.com',source:'Maintenance',home:'Maple Row · 214',value:0});confetti();toast('✓ Request #'+(4400+leads.length)+' submitted · owner + vendor notified');}
+
+/* ---- LIST ---- */
+let listStep=0;
+VIEWS.list=()=>`<section class="wrap section">
+ <span class="eyebrow">List a property</span><h2 class="serif" style="font-size:32px;margin-top:8px;margin-bottom:22px">Publish in minutes — AI does the heavy lifting</h2>
+ <div class="steps">${['The basics','Photos & details','Price & screen','Go live'].map((s,i)=>`<div class="step ${i===listStep?'on':''}"><span class="sn">${i+1}</span> ${s}</div>`).join('')}</div>
+ <div style="display:grid;grid-template-columns:1.3fr 1fr;gap:30px;align-items:start" class="two">
+  <div class="panel">
+   <div class="two"><div class="field"><label>Address</label><input class="input" id="li_addr" value="7 Birch Lofts, Austin TX"></div><div class="field"><label>Type</label><select class="input"><option>For rent</option><option>For sale</option></select></div></div>
+   <div class="two"><div class="field"><label>Bedrooms</label><input class="input" id="li_bd" value="2"></div><div class="field"><label>Bathrooms</label><input class="input" id="li_ba" value="2"></div></div>
+   <div class="field"><label>Monthly rent</label><input class="input" id="li_price" value="2450"></div>
+   <div class="field"><label>Description</label><textarea id="li_desc" placeholder="Tell renters about the space…">Bright corner loft with 14-ft ceilings…</textarea>
+    <div class="ai-write" onclick="aiWrite()">✦ Write it for me — AI drafts a high-converting description</div></div>
+   <button class="btn pri lg" onclick="publishListing()">Publish & syndicate →</button></div>
+  <div>
+   <div class="panel"><h3 style="font-size:16px">✦ AI co-pilot</h3><p class="muted" style="font-size:13px;margin-bottom:14px">Live as you type</p>
+    <div class="ai-note" style="margin:0 0 11px">$ <b style="margin-left:4px">Suggested rent: $2,450–$2,610.</b>&nbsp; Comparable lofts lease in ~12 days here.</div>
+    <div class="ai-note" style="margin:0 0 11px;background:rgba(125,184,255,.07);border-color:rgba(125,184,255,.2);color:var(--blue)">◎ <b style="margin-left:4px">Listing health 78%.</b>&nbsp; Add 4+ photos to reach 95% and rank higher.</div>
+    <div class="ai-note" style="margin:0;background:rgba(232,201,138,.08);border-color:rgba(232,201,138,.25);color:var(--gold)">⚡ <b style="margin-left:4px">One-click syndication</b>&nbsp; to HouseMatch + 12 partner networks.</div></div>
+   <div class="panel" style="margin-top:16px"><h3 style="font-size:16px">Built-in screening</h3><p class="muted" style="font-size:13px;margin-bottom:14px">No third-party tools</p><div class="feat" style="grid-template-columns:1fr">${['Credit + background','Income & employment verify','Auto-rank applicants by fit','E-sign lease same day'].map(s=>`<div>✓ ${s}</div>`).join('')}</div></div>
+  </div></div>
+</section>`;
+function aiWrite(){document.getElementById('li_desc').value="Light-drenched corner loft with soaring 14-ft ceilings and walls of glass. White-oak floors, a chef's kitchen with a waterfall island, and a private balcony over the courtyard. Steps from East Side cafés and the metro — fiber-wired, pet-friendly, and move-in ready.";toast('✦ AI drafted your description — edit anything');}
+function publishListing(){const price=+document.getElementById('li_price').value||2450;const bd=+document.getElementById('li_bd').value||2;const ba=+document.getElementById('li_ba').value||2;const id='new-'+Date.now();HOMES.unshift({id,kind:'rent',price,title:document.getElementById('li_addr').value||'New Listing',city:'Austin TX',beds:bd,baths:ba,sqft:1100,match:90,hot:true,img:9,photos:[9,2,4],note:'Just listed — be the first to tour',pet:true,days:0,lat:50,lng:50,desc:document.getElementById('li_desc').value,amen:['Fiber wired','Pet friendly','In-unit laundry','Rooftop deck']});confetti();toast('🎉 Live on HouseMatch + 12 networks — applicants incoming');setTimeout(()=>go('search'),700);}
+
+/* boot */
+persist();render();
 </script>
 </body>
 </html>
